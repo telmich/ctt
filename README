@@ -1,0 +1,8 @@
+ctt - time tracking for geeks
+
+ctt [list of tags] - starts time tracking
+    press ctrl-c to stop time tracking
+
+ctt --start "date"
+ctt --start "date" --stop "otherdate"
+
