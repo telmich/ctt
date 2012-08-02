@@ -56,19 +56,22 @@ class CTT:
 
         start_seconds =  self.start.strftime("%s")
         stop_seconds =  self.stop.strftime("%s")
+
+        delta_seconds = self.duration().total_seconds()
+
         time_dir = os.path.join(self.project_dir, start_seconds)
         os.makedirs(time_dir, mode=0o700, exist_ok=True)
 
-        filename = os.path.join(time_dir, "end")
+        filename = os.path.join(time_dir, "delta")
 
         with open(filename, "w") as fd:
-            fd.write("%s\n" % stop_seconds)
+            fd.write("%s\n" % delta_seconds)
 
-    def duration(self):
+    def delta(self):
         if self.tracked_time:
             delta = self.stop - self.start
         else:
-            delta = 0
+            delta = datetime.timedelta()
 
         return delta
 
