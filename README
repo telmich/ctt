@@ -11,4 +11,5 @@ ctt --start "date" --stop "otherdate"
 Save to ~/.ctt/times/<project>/
 
 Dateformat:
-    YYYY-MM-DD-hh:mm
+    YYYY-MM-DD-hh:mm:ss
+Report:
