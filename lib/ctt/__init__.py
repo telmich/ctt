@@ -34,9 +34,22 @@ class Error(Exception):
     pass
 
 # Our output format
-def user_datetime(when):
-    """Print time for the user"""
-    return when.ctime()
+def user_timedelta(seconds):
+    """Format timedelta for the user"""
+
+    if seconds >= 3600:
+        hours = int(seconds / 3600)
+        seconds = seconds - (hours * 3600)
+    else:
+        hours = 0
+
+    if seconds >= 60:
+        minutes = int(seconds / 60)
+        seconds = seconds - (minutes * 60)
+    else:
+        minutes = 0
+
+    return (hours, minutes, seconds)
 
 def project_dir(project):
     home = os.environ['HOME']

@@ -42,19 +42,19 @@ class Report(object):
         # Setup default values
         try:
             if start_date:
-                start_date = datetime.datetime.strptime(start_date[0], ctt.DATEFORMAT)
+                self.start_date = datetime.datetime.strptime(start_date[0], ctt.DATEFORMAT)
             else:
-                start_date = self.default_dates()[0]
+                self.start_date = self.default_dates()[0]
 
             if end_date:
-                end_date = datetime.datetime.strptime(end_date[0], ctt.DATEFORMAT)
+                self.end_date = datetime.datetime.strptime(end_date[0], ctt.DATEFORMAT)
             else:
-                end_date = self.default_dates()[1]
+                self.end_date = self.default_dates()[1]
         except ValueError as e:
             raise ctt.Error(e)
 
-        self.start_seconds  = start_date.strftime("%s")
-        self.end_seconds    = end_date.strftime("%s")
+        self.start_seconds  = self.start_date.strftime("%s")
+        self.end_seconds    = self.end_date.strftime("%s")
 
         self.project = project
         self.project_dir = ctt.project_dir(self.project)
@@ -64,7 +64,7 @@ class Report(object):
     @classmethod
     def commandline(cls, args):
         report = cls(args.project[0], args.start, args.end)
-        print("Total time in seconds: %s" % report.total_time())
+        report.report()
 
     def _init_report_db(self):
         """Read all contents from db"""
@@ -84,14 +84,13 @@ class Report(object):
                 log.debug("%s/%s" % (float(dirname) - float(self.start_seconds), 
                     float(self.end_seconds) - float(dirname)))
 
-    def beautify_timedelta(self, timedelta):
-        """Make it printable for the user"""
+    def report(self):
+        """Show report to the user"""
 
-        for times in self._report_db.values():
-            log.debug("Adding %s to %s time..." % (times, count))
-            count = count + float(times)
+        hours, minutes, seconds = ctt.user_timedelta(self.total_time()) 
 
-        return count
+        print("Tracked time between %s and %s: %sh %sm %ss." %
+            (self.start_date, self.end_date, hours, minutes, seconds))
 
     def total_time(self):
         """Return total time tracked"""

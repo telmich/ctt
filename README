@@ -1,5 +1,3 @@
-ctt - time tracking for geeks
-
 ctt - starts time tracking
     press ctrl-c to stop time tracking
 
@@ -15,31 +13,33 @@ Dateformat:
 
 Report:
     
-cdist(1)
-========
-Nico Schottelius <nico-cdist--@--schottelius.org>
+ctt(1)
+======
+Nico Schottelius <nico-ctt--@--schottelius.org>
 
 
 NAME
 ----
-cdist - Configuration management
+ctt - time tracking for geeks
 
 
 SYNOPSIS
 --------
-cdist [-h] [-V]
+ctt [-h] [-V]
 
-cdist banner
+ctt track [-h] [-d] [-v] [-s START] [-e END] project
 
-cdist config [-h] [-d] [-V] [-c CDIST_HOME] [-i MANIFEST] [-p] [-s] host [host ...]
+ctt report [-h] [-d] [-v] [-s START] [-e END] project
 
 
+TIME TRACKING
+-------------
+If you start ctt with a project name, ctt will begin right away to
+track the time, until you stop it using Ctrl-C:
 
-DESCRIPTION
------------
-cdist is the frontend executable to the cdist configuration management.
-cdist supports different as explained below. The options to the main
-program are:
+--------------------------------------------------------------------------------
+ctt track myreport
+--------------------------------------------------------------------------------
 
 -h, --help::
    Show the help screen
@@ -50,7 +50,7 @@ program are:
 
 BANNER
 -------
-Displays the cdist banner.
+Displays the ctt banner.
 
 
 CONFIG
@@ -60,15 +60,15 @@ Configure a system
 -h, --help::
     Show the help screen
 
--c CDIST_HOME, --cdist-home CDIST_HOME::
-    Instead of using the parent of the bin directory as cdist home,
+-c CDIST_HOME, --ctt-home CDIST_HOME::
+    Instead of using the parent of the bin directory as ctt home,
     use the specified directory
 
 -d, --debug::
     Enable debug output
 
 -i MANIFEST, --initial-manifest MANIFEST::
-    Path to a cdist manifest or - to read from stdin
+    Path to a ctt manifest or - to read from stdin
 
 -p, --parallel::
     Operate on multiple hosts in parallel
@@ -88,25 +88,25 @@ EXAMPLES
 
 --------------------------------------------------------------------------------
 # Configure ikq05.ethz.ch with debug enabled
-cdist config -d ikq05.ethz.ch
+ctt config -d ikq05.ethz.ch
 
 # Configure hosts in parallel and use a different home directory
-cdist config -c ~/p/cdist-nutzung \
+ctt config -c ~/p/ctt-nutzung \
     -p ikq02.ethz.ch ikq03.ethz.ch ikq04.ethz.ch
 
 # Use custom remote exec / copy commands
-cdist config --remote-exec /path/to/my/remote/exec \
+ctt config --remote-exec /path/to/my/remote/exec \
     --remote-copy /path/to/my/remote/copy \
     -p ikq02.ethz.ch ikq03.ethz.ch ikq04.ethz.ch
 
 # Display banner
-cdist banner
+ctt banner
 
 # Show help
-cdist --help
+ctt --help
 
 # Show Version
-cdist --version
+ctt --version
 --------------------------------------------------------------------------------
 
 
@@ -131,8 +131,8 @@ The following exit values shall be returned:
 
 SEE ALSO
 --------
-- cdist(7)
-- cdist-reference(7)
+- ctt(7)
+- ctt-reference(7)
 
 
 COPYING

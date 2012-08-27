@@ -43,7 +43,7 @@ class Tracker:
         tracker = cls(args.project[0])
         tracker.track_time()
         tracker.write_time()
-        print(tracker.delta())
+        log.info(tracker.delta())
 
     # Track time and return information from tracking
     def track_time(self):
