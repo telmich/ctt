@@ -55,6 +55,7 @@ def parse_argv(argv, version):
         nargs=1)
     parser['track'].add_argument("-e", "--end", help="End datetime (format: %s)" % ctt.DATETIMEFORMAT_PLAIN,
         nargs=1)
+    parser['track'].add_argument("-c", "--comment", help="Add comment after tracking", action='store_true')
     parser['track'].add_argument("project", help="Project to track time for", nargs=1)
 
     parser['report'] = parser['sub'].add_parser('report',

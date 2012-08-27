@@ -32,49 +32,77 @@ import ctt
 log = logging.getLogger(__name__)
 
 class Tracker:
-    def __init__(self, project):
+    def __init__(self, project, start_datetime = None, end_datetime = None, comment = False):
         self.project = project
-        self.tracked_time = False
-
         self.project_dir = ctt.project_dir(project)
+
+        self._tracked_time = False
+
+        # Setup default values
+        try:
+            if start_datetime:
+                self.start_datetime = datetime.datetime.strptime(start_datetime[0], ctt.DATETIMEFORMAT)
+            else:
+                self.start_datetime = None
+
+            if end_datetime:
+                self.end_datetime = datetime.datetime.strptime(end_datetime[0], ctt.DATETIMEFORMAT)
+            else:
+                self.end_datetime = None
+        except ValueError as e:
+            raise ctt.Error(e)
+
+        if self.start_datetime and self.end_datetime:
+            self._tracked_time = True
+
 
     @classmethod
     def commandline(cls, args):
-        tracker = cls(args.project[0])
+        tracker = cls(args.project[0], args.start, args.end, args.comment)
         tracker.track_time()
         tracker.write_time()
         log.info(tracker.delta())
 
     # Track time and return information from tracking
     def track_time(self):
-        self.start = datetime.datetime.now()
+        """Track time, if necessary"""
+
+        # Do not track again
+        if self._tracked_time:
+            return
+
+        # If not given by the user
+        if not self.start_datetime:
+            self.start_datetime = datetime.datetime.now()
 
         try:
-            # Wait for the exception to pop up - FIXME: find better method
-
-            # Using input, Ctrl-C is displayed as ^C on the screen - ugly
-            #input()
-
-            # Sleep 42 years - should be longer than anybody trying to track time
-            time.sleep(86400 * 365 * 42)
-
+            # Wait for the exception to pop up
+            input()
         except KeyboardInterrupt:
             pass
 
-        self.stop = datetime.datetime.now()
+        self.end_datetime = datetime.datetime.now()
 
-        self.tracked_time = True
+        self._tracked_time = True
 
     def write_time(self):
-        if not self.tracked_time:
+        if not self._tracked_time:
             return
 
-        start_seconds =  self.start.strftime("%s")
-        stop_seconds =  self.stop.strftime("%s")
+        if self.start_datetime >= self.end_datetime:
+            raise ctt.Error("End date must be after start date! (%s > %s)!" %
+                (self.start_datetime, self.end_datetime))
+
+        start_seconds =  self.start_datetime.strftime("%s")
+        end_seconds =  self.end_datetime.strftime("%s")
         delta_seconds = self.delta()
 
         time_dir = os.path.join(self.project_dir, start_seconds)
-        os.makedirs(time_dir, mode=0o700, exist_ok=True)
+
+        if os.path.exists(time_dir):
+            raise ctt.Error("Already tracked time at this beginning for this project")
+
+        os.makedirs(time_dir, mode=0o700)
         filename = os.path.join(time_dir, ctt.FILE_DELTA)
 
         with open(filename, "w") as fd:
@@ -83,8 +111,8 @@ class Tracker:
     def delta(self, in_seconds=True):
         """Return time delta - empty (==0) if not tracked"""
 
-        if self.tracked_time:
-            delta = self.stop - self.start
+        if self._tracked_time:
+            delta = self.end_datetime - self.start_datetime
         else:
             delta = datetime.timedelta()
 
