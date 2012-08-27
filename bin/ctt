@@ -51,15 +51,19 @@ def parse_argv(argv, version):
     parser['track'] = parser['sub'].add_parser('track',
         parents=[parser['loglevel']])
     parser['track'].set_defaults(func=Tracker.commandline)
+    parser['track'].add_argument("-s", "--start", help="Start datetime (format: %s)" % ctt.DATETIMEFORMAT_PLAIN,
+        nargs=1)
+    parser['track'].add_argument("-e", "--end", help="End datetime (format: %s)" % ctt.DATETIMEFORMAT_PLAIN,
+        nargs=1)
     parser['track'].add_argument("project", help="Project to track time for", nargs=1)
 
     parser['report'] = parser['sub'].add_parser('report',
         parents=[parser['loglevel']])
     parser['report'].set_defaults(func=Report.commandline)
     parser['report'].add_argument("project", help="Project to report time for", nargs=1)
-    parser['report'].add_argument("-s", "--start", help="Start datetime (first of last month)",
+    parser['report'].add_argument("-s", "--start", help="Start date (default: first of last month, format: %s)" % ctt.DATEFORMAT_PLAIN,
         nargs=1)
-    parser['report'].add_argument("-e", "--end", help="End datetime (last of last month)", nargs=1,
+    parser['report'].add_argument("-e", "--end", help="End date (default: last of last month, format: %s)" % ctt.DATEFORMAT_PLAIN, nargs=1,
         default=None)
 
     #parser['track'].add_argument("-t", "--tag", help="Add tags",

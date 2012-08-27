@@ -26,6 +26,9 @@ import os.path
 VERSION         = "0.1"
 FILE_DELTA      = "delta"
 DATEFORMAT      = "%Y-%m-%d"
+DATEFORMAT_PLAIN= DATEFORMAT.replace("%","")
+DATETIMEFORMAT      = "%Y-%m-%d-%H:%M"
+DATETIMEFORMAT_PLAIN= DATETIMEFORMAT.replace("%","")
 
 class Error(Exception):
     pass
