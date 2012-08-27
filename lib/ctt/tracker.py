@@ -21,16 +21,13 @@
 #
 
 import datetime
-
-#import signal
-
-import locale
 import logging
 import time
-
 import os
 import os.path
 import sys
+
+import ctt
 
 log = logging.getLogger(__name__)
 
@@ -39,10 +36,14 @@ class Tracker:
         self.project = project
         self.tracked_time = False
 
-        self._init_home()
+        self.project_dir = ctt.project_dir(project)
 
-        self.project_dir = project_dir(project)
-
+    @classmethod
+    def commandline(cls, args):
+        tracker = cls(args.project[0])
+        tracker.track_time()
+        tracker.write_time()
+        print(tracker.delta())
 
     # Track time and return information from tracking
     def track_time(self):
@@ -74,12 +75,14 @@ class Tracker:
 
         time_dir = os.path.join(self.project_dir, start_seconds)
         os.makedirs(time_dir, mode=0o700, exist_ok=True)
-        filename = os.path.join(time_dir, FILE_DELTA)
+        filename = os.path.join(time_dir, ctt.FILE_DELTA)
 
         with open(filename, "w") as fd:
             fd.write("%s\n" % delta_seconds)
 
     def delta(self, in_seconds=True):
+        """Return time delta - empty (==0) if not tracked"""
+
         if self.tracked_time:
             delta = self.stop - self.start
         else:

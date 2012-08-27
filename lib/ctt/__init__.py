@@ -18,11 +18,17 @@
 # You should have received a copy of the GNU General Public License
 # along with ctt. If not, see <http://www.gnu.org/licenses/>.
 #
-#           
+# 
+
+import os
+import os.path
 
 VERSION         = "0.1"
 FILE_DELTA      = "delta"
+DATEFORMAT      = "%Y-%m-%d"
 
+class Error(Exception):
+    pass
 
 # Our output format
 def user_datetime(when):

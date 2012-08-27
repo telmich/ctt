@@ -30,6 +30,8 @@ import os
 import os.path
 import sys
 
+import ctt
+
 log = logging.getLogger(__name__)
 
 class Report(object):
@@ -38,33 +40,69 @@ class Report(object):
     def __init__(self, project, start_date, end_date):
 
         # Setup default values
-        if not start_date and not end_date:
-            start_date, end_date = self.default_dates()
+        try:
+            if start_date:
+                start_date = datetime.datetime.strptime(start_date[0], ctt.DATEFORMAT)
+            else:
+                start_date = self.default_dates()[0]
 
-        self.start_seconds = start_date.strftime("%s")
-        self.end_seconds = end_date.strftime("%s")
+            if end_date:
+                end_date = datetime.datetime.strptime(end_date[0], ctt.DATEFORMAT)
+            else:
+                end_date = self.default_dates()[1]
+        except ValueError as e:
+            raise ctt.Error(e)
+
+        self.start_seconds  = start_date.strftime("%s")
+        self.end_seconds    = end_date.strftime("%s")
 
         self.project = project
-        self.project_dir = project_dir(self.project)
+        self.project_dir = ctt.project_dir(self.project)
 
         self._init_report_db()
+
+    @classmethod
+    def commandline(cls, args):
+        report = cls(args.project[0], args.start, args.end)
+        print("Total time in seconds: %s" % report.total_time())
 
     def _init_report_db(self):
         """Read all contents from db"""
 
+        if not os.path.isdir(self.project_dir):
+            raise ctt.Error("Project does not exist: %s" % (self.project))
+
         self._report_db = {}
         for dirname in os.listdir(self.project_dir):
-            print("%s:%s:%s" % (self.start_seconds, dirname, self.end_seconds))
             if dirname >= self.start_seconds and dirname <= self.end_seconds:
-                filename = os.path.join(self.project_dir, dirname, FILE_DELTA)
+                filename = os.path.join(self.project_dir, dirname, ctt.FILE_DELTA)
                 with open(filename, "r") as fd:
                     self._report_db[dirname] = fd.read().rstrip('\n')
 
-                print("%s: %s" % (dirname, self._report_db[dirname]))
+                log.debug("%s: %s" % (dirname, self._report_db[dirname]))
+            else:
+                log.debug("%s/%s" % (float(dirname) - float(self.start_seconds), 
+                    float(self.end_seconds) - float(dirname)))
+
+    def beautify_timedelta(self, timedelta):
+        """Make it printable for the user"""
+
+        for times in self._report_db.values():
+            log.debug("Adding %s to %s time..." % (times, count))
+            count = count + float(times)
+
+        return count
 
     def total_time(self):
         """Return total time tracked"""
-        pass
+
+        count = 0
+        for times in self._report_db.values():
+            log.debug("Adding %s to %s time..." % (times, count))
+            count = count + float(times)
+
+        return count
+
 
     @staticmethod
     def default_dates():
