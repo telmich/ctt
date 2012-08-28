@@ -93,11 +93,8 @@ class Tracker:
             raise ctt.Error("End date must be after start date! (%s > %s)!" %
                 (self.start_datetime, self.end_datetime))
 
-        start_seconds =  self.start_datetime.strftime("%s")
-        end_seconds =  self.end_datetime.strftime("%s")
-        delta_seconds = self.delta()
-
-        time_dir = os.path.join(self.project_dir, start_seconds)
+        subdirname = self.start_datetime.strftime(ctt.DISKFORMAT)
+        time_dir = os.path.join(self.project_dir, subdirname)
 
         if os.path.exists(time_dir):
             raise ctt.Error("Already tracked time at this beginning for this project")
@@ -106,7 +103,7 @@ class Tracker:
         filename = os.path.join(time_dir, ctt.FILE_DELTA)
 
         with open(filename, "w") as fd:
-            fd.write("%s\n" % delta_seconds)
+            fd.write("%s\n" % self.delta())
 
     def delta(self, in_seconds=True):
         """Return time delta - empty (==0) if not tracked"""

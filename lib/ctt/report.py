@@ -74,15 +74,15 @@ class Report(object):
 
         self._report_db = {}
         for dirname in os.listdir(self.project_dir):
-            if dirname >= self.start_seconds and dirname <= self.end_seconds:
+            dir_datetime = datetime.datetime.strptime(dirname, ctt.DISKFORMAT)
+            if dir_datetime >= self.start_date and dir_datetime <= self.end_date:
                 filename = os.path.join(self.project_dir, dirname, ctt.FILE_DELTA)
                 with open(filename, "r") as fd:
                     self._report_db[dirname] = fd.read().rstrip('\n')
 
-                log.debug("%s: %s" % (dirname, self._report_db[dirname]))
+                log.debug("Recording: %s: %s" % (dirname, self._report_db[dirname]))
             else:
-                log.debug("%s/%s" % (float(dirname) - float(self.start_seconds), 
-                    float(self.end_seconds) - float(dirname)))
+                log.debug("Skipping: %s" % dirname)
 
     def report(self):
         """Show report to the user"""

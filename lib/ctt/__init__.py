@@ -27,8 +27,12 @@ VERSION         = "0.1"
 FILE_DELTA      = "delta"
 DATEFORMAT      = "%Y-%m-%d"
 DATEFORMAT_PLAIN= DATEFORMAT.replace("%","")
-DATETIMEFORMAT      = "%Y-%m-%d-%H:%M"
+DATETIMEFORMAT      = "%Y-%m-%d-%H%M"
 DATETIMEFORMAT_PLAIN= DATETIMEFORMAT.replace("%","")
+
+# Name of the folder to create - should not contain special characters
+# to ensure cross-os compatibility
+DISKFORMAT      = DATETIMEFORMAT
 
 class Error(Exception):
     pass
