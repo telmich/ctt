@@ -37,6 +37,7 @@ class Tracker:
         self.project_dir = ctt.project_dir(project)
 
         self._tracked_time = False
+        self.comment = None
 
         # Setup default values
         try:
@@ -60,8 +61,16 @@ class Tracker:
     def commandline(cls, args):
         tracker = cls(args.project[0], args.start, args.end, args.comment)
         tracker.track_time()
+
+        if args.comment:
+            tracker.record_comment()
+
         tracker.write_time()
         log.info(tracker.delta())
+
+    def record_comment(self):
+        """Record a comment for tracked data"""
+        self.comment = input("Comment: ")
 
     # Track time and return information from tracking
     def track_time(self):
@@ -104,6 +113,11 @@ class Tracker:
 
         with open(filename, "w") as fd:
             fd.write("%s\n" % self.delta())
+
+        if self.comment:
+            filename = os.path.join(time_dir, ctt.FILE_COMMENT)
+            with open(filename, "w") as fd:
+                fd.write("%s\n" % self.comment)
 
     def delta(self, in_seconds=True):
         """Return time delta - empty (==0) if not tracked"""

@@ -25,6 +25,7 @@ import os.path
 
 VERSION         = "0.1"
 FILE_DELTA      = "delta"
+FILE_COMMENT    = "comment"
 DATEFORMAT      = "%Y-%m-%d"
 DATEFORMAT_PLAIN= DATEFORMAT.replace("%","")
 DATETIMEFORMAT      = "%Y-%m-%d-%H%M"
