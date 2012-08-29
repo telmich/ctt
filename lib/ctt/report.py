@@ -39,7 +39,21 @@ class Report(object):
 
     def __init__(self, project, start_date, end_date):
 
-        # Setup default values
+        self.project = project
+        self.project_dir = ctt.project_dir(self.project)
+
+        self._init_date(start_date, end_date)
+        self._init_report_db()
+
+    @classmethod
+    def commandline(cls, args):
+        report = cls(args.project[0], args.start, args.end)
+        report.report()
+
+
+    def _init_date(self, start_date, end_date):
+        """ Setup date - either default or user given values"""
+
         try:
             if start_date:
                 self.start_date = datetime.datetime.strptime(start_date[0], ctt.DATEFORMAT)
@@ -53,18 +67,11 @@ class Report(object):
         except ValueError as e:
             raise ctt.Error(e)
 
-        self.start_seconds  = self.start_date.strftime("%s")
-        self.end_seconds    = self.end_date.strftime("%s")
+        self.end_date = self.end_date.replace(hour=23,minute=59,second=59)
 
-        self.project = project
-        self.project_dir = ctt.project_dir(self.project)
-
-        self._init_report_db()
-
-    @classmethod
-    def commandline(cls, args):
-        report = cls(args.project[0], args.start, args.end)
-        report.report()
+        if self.start_date >= self.end_date:
+            raise ctt.Error("End date must be after start date (%s >= %s)" % 
+                (self.start_date, self.end_date))
 
     def _init_report_db(self):
         """Read all contents from db"""

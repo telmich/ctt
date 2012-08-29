@@ -109,8 +109,8 @@ class Tracker:
             raise ctt.Error("Already tracked time at this beginning for this project")
 
         os.makedirs(time_dir, mode=0o700)
-        filename = os.path.join(time_dir, ctt.FILE_DELTA)
 
+        filename = os.path.join(time_dir, ctt.FILE_DELTA)
         with open(filename, "w") as fd:
             fd.write("%s\n" % self.delta())
 
