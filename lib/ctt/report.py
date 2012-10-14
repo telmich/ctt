@@ -84,14 +84,27 @@ class Report(object):
             dir_datetime = datetime.datetime.strptime(dirname, ctt.DISKFORMAT)
             if dir_datetime >= self.start_date and dir_datetime <= self.end_date:
                 filename = os.path.join(self.project_dir, dirname, ctt.FILE_DELTA)
-                with open(filename, "r") as fd:
-                    self._report_db[dirname] = fd.read().rstrip('\n')
 
-                log.debug("Recording: %s: %s" % (dirname, self._report_db[dirname]))
+                self._report_db[dirname] = {}
+
+                with open(filename, "r") as fd:
+                    self._report_db[dirname]['delta'] = fd.read().rstrip('\n')
+
+                log.debug("Recording: %s: %s" % (dirname, self._report_db[dirname]['delta']))
+
+                comment_filename = os.path.join(self.project_dir, dirname, ctt.FILE_COMMENT)
+                if os.path.exists(comment_filename):
+                    with open(comment_filename, "r") as fd:
+                        self._report_db[dirname]['comment'] = fd.read().rstrip('\n')
+
             else:
                 log.debug("Skipping: %s" % dirname)
 
     def report(self):
+        self.list_entries()
+        self.summary()
+
+    def summary(self):
         """Show report to the user"""
 
         hours, minutes, seconds = ctt.user_timedelta(self.total_time()) 
@@ -100,14 +113,38 @@ class Report(object):
             (self.start_date, self.end_date, hours, minutes, seconds))
 
     def total_time(self):
-        """Return total time tracked"""
+        """Return all entries"""
 
         count = 0
-        for times in self._report_db.values():
-            log.debug("Adding %s to %s time..." % (times, count))
-            count = count + float(times)
+        for entry in self._report_db.values():
+            delta = entry['delta']
+            log.debug("Adding %s to %s time..." % (delta, count))
+            count = count + float(delta)
 
         return count
+
+
+    def list_entries(self):
+        """Return total time tracked"""
+
+        for time, entry in self._report_db.items():
+            start_datetime = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+            delta = datetime.timedelta(seconds=float(entry['delta']))
+            end_datetime = start_datetime + delta
+
+            # Strip off microsecends - this is really too much
+            end_datetime = end_datetime.replace(microsecond = 0)
+
+
+            if 'comment' in entry:
+                comment = entry['comment']
+            else:
+                comment = False
+
+            if comment:
+                print("%s - %s: %s" % (start_datetime, end_datetime, comment))
+            else:
+                print("%s - %s" % (start_datetime, end_datetime))
 
 
     @staticmethod
