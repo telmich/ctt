@@ -1,5 +1,10 @@
-ctt - starts time tracking
-    press ctrl-c to stop time tracking
+ctt - time tracking for geeks
+
+    Nico Schottelius, 2012
+
+
+ctt is made for geeks, so it should not stand in your way.
+
 
 ctt -t|--track
 ctt --start "date"
@@ -75,12 +80,6 @@ Configure a system
 
 -s, --sequential::
     Operate on multiple hosts sequentially
-
---remote-copy REMOTE_COPY:
-    Command to use for remote copy (should behave like scp)
-
---remote-exec REMOTE_EXEC:
-    Command to use for remote execution (should behave like ssh)
 
 
 EXAMPLES
