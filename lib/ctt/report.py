@@ -52,7 +52,7 @@ class Report(object):
 
 
     def _init_date(self, start_date, end_date):
-        """ Setup date - either default or user given values"""
+        """Setup date - either default or user given values"""
 
         try:
             if start_date:
@@ -127,9 +127,14 @@ class Report(object):
     def list_entries(self):
         """Return total time tracked"""
 
-        for time, entry in self._report_db.items():
+        sorted_times = sorted(self._report_db.keys())
+        #for time, entry in self._report_db.items():
+
+        for time in sorted_times:
+            entry = self._report_db[time]
+
             start_datetime = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
-            delta = datetime.timedelta(seconds=float(entry['delta']))
+            delta = datetime.timedelta(seconds=int(float(entry['delta'])))
             end_datetime = start_datetime + delta
 
             # Strip off microsecends - this is really too much
@@ -142,9 +147,9 @@ class Report(object):
                 comment = False
 
             if comment:
-                print("%s - %s: %s" % (start_datetime, end_datetime, comment))
+                print("%s (%s): %s" % (start_datetime, delta, comment))
             else:
-                print("%s - %s" % (start_datetime, end_datetime))
+                print("%s (%s)" % (start_datetime, delta))
 
 
     @staticmethod
