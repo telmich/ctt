@@ -55,7 +55,8 @@ def parse_argv(argv, version):
         nargs=1)
     parser['track'].add_argument("-e", "--end", help="End datetime (format: %s)" % ctt.DATETIMEFORMAT_PLAIN,
         nargs=1)
-    parser['track'].add_argument("-c", "--comment", help="Add comment after tracking", action='store_true')
+    parser['track'].add_argument("-n", "--no-comment", help="Disable comment prompting after tracking",
+        action='store_false', dest="comment")
     parser['track'].add_argument("project", help="Project to track time for", nargs=1)
 
     parser['report'] = parser['sub'].add_parser('report',
@@ -86,10 +87,6 @@ def parse_argv(argv, version):
         log.error(e)
         sys.exit(1)
 
-# Setup signal handler
-# Start tracking
-# Save stuff to our home directory
-
 if __name__ == "__main__":
     # Ensure our /lib/ is included into PYTHON_PATH
     sys.path.insert(0, os.path.abspath(
@@ -104,7 +101,3 @@ if __name__ == "__main__":
 
     parse_argv(sys.argv[1:], ctt.VERSION)
     sys.exit(0)
-
-
-# Create datetime from userinput
-# Wed Aug  1 23:35:53 2012

@@ -32,7 +32,7 @@ import ctt
 log = logging.getLogger(__name__)
 
 class Tracker:
-    def __init__(self, project, start_datetime = None, end_datetime = None, comment = False):
+    def __init__(self, project, start_datetime = None, end_datetime = None, comment = True):
         self.project = project
         self.project_dir = ctt.project_dir(project)
 
