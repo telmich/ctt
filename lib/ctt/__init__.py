@@ -23,7 +23,7 @@
 import os
 import os.path
 
-VERSION         = "0.5"
+VERSION         = "0.6"
 FILE_DELTA      = "delta"
 FILE_COMMENT    = "comment"
 DATEFORMAT      = "%Y-%m-%d"
@@ -56,9 +56,17 @@ def user_timedelta(seconds):
 
     return (hours, minutes, seconds)
 
-def project_dir(project):
+def ctt_dir():
     home = os.environ['HOME']
     ctt_dir = os.path.join(home, ".ctt")
+
+    return ctt_dir
+
+def project_dir(project):
+    ctt_dir = ctt_dir()
     project_dir = os.path.join(ctt_dir, project)
 
     return project_dir
+
+def list_projects(ctt_dir):
+    return os.listdir(ctt_dir)

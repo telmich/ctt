@@ -48,6 +48,10 @@ def parse_argv(argv, version):
     parser['sub'] = parser['main'].add_subparsers(title="Commands")
 
 
+    parser['listprojects'] = parser['sub'].add_parser('listprojects',
+        parents=[parser['loglevel']])
+    parser['listprojects'].set_defaults(func=ListProjects.commandline)
+
     parser['track'] = parser['sub'].add_parser('track',
         parents=[parser['loglevel']])
     parser['track'].set_defaults(func=Tracker.commandline)
@@ -98,6 +102,8 @@ if __name__ == "__main__":
     import ctt
     from ctt.tracker import Tracker
     from ctt.report import Report
+    from ctt.listprojects import ListProjects
+
 
     parse_argv(sys.argv[1:], ctt.VERSION)
     sys.exit(0)
