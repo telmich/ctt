@@ -54,16 +54,22 @@ class Report(object):
     def _init_date(self, start_date, end_date):
         """Setup date - either default or user given values"""
 
+
+        now = datetime.datetime.now()
+        first_day = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        default_end_date = first_day - datetime.timedelta(days=1)
+        default_start_date = default_end_date.replace(day=1)
+
         try:
             if start_date:
                 self.start_date = datetime.datetime.strptime(start_date[0], ctt.DATEFORMAT)
             else:
-                self.start_date = self.default_dates()[0]
+                self.start_date = default_start_date
 
             if end_date:
                 self.end_date = datetime.datetime.strptime(end_date[0], ctt.DATEFORMAT)
             else:
-                self.end_date = self.default_dates()[1]
+                self.end_date = default_end_date
         except ValueError as e:
             raise ctt.Error(e)
 
@@ -150,18 +156,3 @@ class Report(object):
                 print("%s (%s): %s" % (start_datetime, delta, comment))
             else:
                 print("%s (%s)" % (start_datetime, delta))
-
-
-    @staticmethod
-    def default_dates():
-        """Return default start and end of of time
-        start: first of last month
-        end: last of last month
-        """
-
-        now = datetime.datetime.now()
-        first_day = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        end_date = first_day - datetime.timedelta(days=1)
-        start_date = end_date.replace(day=1)
-
-        return (start_date, end_date)

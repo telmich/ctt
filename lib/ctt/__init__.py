@@ -63,8 +63,7 @@ def ctt_dir():
     return ctt_dir
 
 def project_dir(project):
-    ctt_dir = ctt_dir()
-    project_dir = os.path.join(ctt_dir, project)
+    project_dir = os.path.join(ctt_dir(), project)
 
     return project_dir
 
