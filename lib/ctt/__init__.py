@@ -30,6 +30,7 @@ DATEFORMAT      = "%Y-%m-%d"
 DATEFORMAT_PLAIN= DATEFORMAT.replace("%","")
 DATETIMEFORMAT      = "%Y-%m-%d-%H%M"
 DATETIMEFORMAT_PLAIN= DATETIMEFORMAT.replace("%","")
+REPORTFORMAT = "{0} ({1}): {2}"
 
 # Name of the folder to create - should not contain special characters
 # to ensure cross-os compatibility

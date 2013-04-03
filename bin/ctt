@@ -69,8 +69,9 @@ def parse_argv(argv, version):
     parser['report'].add_argument("project", help="Project to report time for", nargs=1)
     parser['report'].add_argument("-s", "--start", help="Start date (default: first of last month, format: %s)" % ctt.DATEFORMAT_PLAIN,
         nargs=1)
-    parser['report'].add_argument("-e", "--end", help="End date (default: last of last month, format: %s)" % ctt.DATEFORMAT_PLAIN, nargs=1,
-        default=None)
+    parser['report'].add_argument("-e", "--end", help="End date (default: last of last month, format: %s)" % ctt.DATEFORMAT_PLAIN, nargs=1, default=None)
+
+    parser['report'].add_argument("-f", "--format", help="Output format (default: %s)" % ctt.REPORTFORMAT, default=ctt.REPORTFORMAT, dest="output_format")
 
     #parser['track'].add_argument("-t", "--tag", help="Add tags",
     #    action="store_true")

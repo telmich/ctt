@@ -28,6 +28,7 @@ import time
 
 import os
 import os.path
+import re
 import sys
 
 import ctt
@@ -37,17 +38,19 @@ log = logging.getLogger(__name__)
 class Report(object):
     """Create a report on tracked time"""
 
-    def __init__(self, project, start_date, end_date):
+    def __init__(self, project, start_date, end_date, output_format):
 
         self.project = project
         self.project_dir = ctt.project_dir(self.project)
+
+        self.output_format = output_format
 
         self._init_date(start_date, end_date)
         self._init_report_db()
 
     @classmethod
     def commandline(cls, args):
-        report = cls(args.project[0], args.start, args.end)
+        report = cls(args.project[0], args.start, args.end, args.output_format)
         report.report()
 
 
@@ -56,9 +59,16 @@ class Report(object):
 
 
         now = datetime.datetime.now()
-        first_day = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        default_end_date = first_day - datetime.timedelta(days=1)
-        default_start_date = default_end_date.replace(day=1)
+        first_day_this_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        next_month = first_day_this_month.replace(day=28) + datetime.timedelta(days=4)
+        first_day_next_month = next_month.replace(day=1)
+        last_day_this_month = first_day_next_month - datetime.timedelta(seconds=1)
+
+        default_start_date = first_day_this_month
+        default_end_date = last_day_this_month
+
+        #default_end_date = first_day - datetime.timedelta(days=1)
+        #default_start_date = default_end_date.replace(day=1)
 
         try:
             if start_date:
@@ -85,23 +95,35 @@ class Report(object):
         if not os.path.isdir(self.project_dir):
             raise ctt.Error("Project does not exist: %s" % (self.project))
 
+        # self.regexp = "^rails19"
+        self.regexp = None
+
         self._report_db = {}
         for dirname in os.listdir(self.project_dir):
             dir_datetime = datetime.datetime.strptime(dirname, ctt.DISKFORMAT)
             if dir_datetime >= self.start_date and dir_datetime <= self.end_date:
                 filename = os.path.join(self.project_dir, dirname, ctt.FILE_DELTA)
+                comment_filename = os.path.join(self.project_dir, dirname, ctt.FILE_COMMENT)
+
+                # Check for matching comment
+                comment = None
+                if os.path.exists(comment_filename):
+                    with open(comment_filename, "r") as fd:
+                        comment = fd.read().rstrip('\n')
+                    
+                    # If regular expression given, but not matching, skip entry
+                    if self.regexp and not re.search(self.regexp, comment):
+                        continue
+
 
                 self._report_db[dirname] = {}
+                if comment:
+                    self._report_db[dirname]['comment'] = comment
 
                 with open(filename, "r") as fd:
                     self._report_db[dirname]['delta'] = fd.read().rstrip('\n')
 
                 log.debug("Recording: %s: %s" % (dirname, self._report_db[dirname]['delta']))
-
-                comment_filename = os.path.join(self.project_dir, dirname, ctt.FILE_COMMENT)
-                if os.path.exists(comment_filename):
-                    with open(comment_filename, "r") as fd:
-                        self._report_db[dirname]['comment'] = fd.read().rstrip('\n')
 
             else:
                 log.debug("Skipping: %s" % dirname)
@@ -140,7 +162,11 @@ class Report(object):
             entry = self._report_db[time]
 
             start_datetime = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+
+            delta_seconds = int(float(entry['delta']))
+            delta_minutes = int(delta_seconds/60)
             delta = datetime.timedelta(seconds=int(float(entry['delta'])))
+
             end_datetime = start_datetime + delta
 
             # Strip off microsecends - this is really too much
@@ -152,7 +178,11 @@ class Report(object):
             else:
                 comment = False
 
-            if comment:
-                print("%s (%s): %s" % (start_datetime, delta, comment))
-            else:
-                print("%s (%s)" % (start_datetime, delta))
+            #output_format="{0};{4};{2}"
+
+            print(self.output_format.format(start_datetime, delta, comment, delta_seconds, delta_minutes))
+
+            #if comment:
+            #    print("%s (%s): %s" % (start_datetime, delta, comment))
+            #else:
+            #    print("%s (%s)" % (start_datetime, delta))
