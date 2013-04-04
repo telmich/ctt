@@ -1,0 +1,30 @@
+[[!meta title="ctt - time tracking for geeks"]]
+
+[[!toc levels=3]]
+
+## Introduction
+
+Ever wondered how much you work compared to what you should?
+Are you in the need to record working time for a customer?
+Do you want something that is very simple, geek compatible
+and runs on the command line? Then you may have found the right
+software.
+
+## Installation
+
+Get ctt from git ([gitweb](http://git.schottelius.org/?p=ctt;a=summary)):
+
+    git clone git://git.schottelius.org/ctt
+
+### Mirrors
+
+ * git://github.com/telmich/ctt.git ([github](https://github.com/telmich/ctt))
+
+## Support
+
+### IRC
+
+You can join the development ***IRC channel***
+[#cstar on irc.freenode.net](irc://irc.freenode.org/#cstar).
+
+[[!tag ctt unix]]
