@@ -178,11 +178,4 @@ class Report(object):
             else:
                 comment = False
 
-            #output_format="{0};{4};{2}"
-
             print(self.output_format.format(start_datetime, delta, comment, delta_seconds, delta_minutes))
-
-            #if comment:
-            #    print("%s (%s): %s" % (start_datetime, delta, comment))
-            #else:
-            #    print("%s (%s)" % (start_datetime, delta))
