@@ -1,5 +1,10 @@
 Changelog
 ---------
 
+0.8: 2013-04-27
+	* Added -e / --regexp support for filtering entries on report
+	* Added -i / --ignore-case support
+	* Renamed -s/-e to --sd / --ed (to allow -e for expression)
+
 0.7:
 	* Added -f / --format support for reporting

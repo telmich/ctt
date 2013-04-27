@@ -23,7 +23,7 @@
 import os
 import os.path
 
-VERSION         = "0.6"
+VERSION         = "0.8"
 FILE_DELTA      = "delta"
 FILE_COMMENT    = "comment"
 DATEFORMAT      = "%Y-%m-%d"

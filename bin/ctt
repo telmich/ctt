@@ -67,11 +67,16 @@ def parse_argv(argv, version):
         parents=[parser['loglevel']])
     parser['report'].set_defaults(func=Report.commandline)
     parser['report'].add_argument("project", help="Project to report time for", nargs=1)
-    parser['report'].add_argument("-s", "--start", help="Start date (default: first of last month, format: %s)" % ctt.DATEFORMAT_PLAIN,
-        nargs=1)
-    parser['report'].add_argument("-e", "--end", help="End date (default: last of last month, format: %s)" % ctt.DATEFORMAT_PLAIN, nargs=1, default=None)
+    parser['report'].add_argument("--sd", "--start", help="Start date (default: first of last month, format: %s)" % ctt.DATEFORMAT_PLAIN, 
+        nargs=1, dest="start")
+    parser['report'].add_argument("--ed", "--end", help="End date (default: last of last month, format: %s)" % ctt.DATEFORMAT_PLAIN, 
+        nargs=1, default=None, dest="end")
 
-    parser['report'].add_argument("-f", "--format", help="Output format (default: %s)" % ctt.REPORTFORMAT, default=ctt.REPORTFORMAT, dest="output_format")
+    parser['report'].add_argument("-e", "--regexp", help="Regular expression to match",
+        default=None)
+    parser['report'].add_argument("-i", "--ignore-case", help="Ignore case distinctions", action="store_true")
+    parser['report'].add_argument("-f", "--format", help="Output format (default: %s)" % ctt.REPORTFORMAT, 
+        default=ctt.REPORTFORMAT, dest="output_format")
 
     #parser['track'].add_argument("-t", "--tag", help="Add tags",
     #    action="store_true")

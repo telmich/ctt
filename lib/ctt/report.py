@@ -38,19 +38,26 @@ log = logging.getLogger(__name__)
 class Report(object):
     """Create a report on tracked time"""
 
-    def __init__(self, project, start_date, end_date, output_format):
+    def __init__(self, project, start_date, end_date, 
+        output_format, regexp, ignore_case):
 
         self.project = project
         self.project_dir = ctt.project_dir(self.project)
 
         self.output_format = output_format
+        self.regexp = regexp
+
+        if ignore_case:
+            self.search_flags = re.IGNORECASE
+        else:
+            self.search_flags = 0
 
         self._init_date(start_date, end_date)
         self._init_report_db()
 
     @classmethod
     def commandline(cls, args):
-        report = cls(args.project[0], args.start, args.end, args.output_format)
+        report = cls(args.project[0], args.start, args.end, args.output_format, args.regexp, args.ignore_case)
         report.report()
 
 
@@ -95,9 +102,6 @@ class Report(object):
         if not os.path.isdir(self.project_dir):
             raise ctt.Error("Project does not exist: %s" % (self.project))
 
-        # self.regexp = "^rails19"
-        self.regexp = None
-
         self._report_db = {}
         for dirname in os.listdir(self.project_dir):
             dir_datetime = datetime.datetime.strptime(dirname, ctt.DISKFORMAT)
@@ -112,7 +116,7 @@ class Report(object):
                         comment = fd.read().rstrip('\n')
                     
                     # If regular expression given, but not matching, skip entry
-                    if self.regexp and not re.search(self.regexp, comment):
+                    if self.regexp and not re.search(self.regexp, comment, self.search_flags):
                         continue
 
 
