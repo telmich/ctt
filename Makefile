@@ -11,7 +11,7 @@ pub:
 
 webpub:
 	cp ctt.mdwn $(webdir)
-	cd $(webdir) && git add ctt.mdwn && git commit -m "ctt update" ctt.mdwn
+	cd $(webdir) && git add ctt.mdwn && git commit -m "ctt update" ctt.mdwn ; git push
 
 
 %.1: %.text
