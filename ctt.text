@@ -127,7 +127,6 @@ Comment: Started early today
 
 # The same, but case insensitive
 % ctt report --sd 2013-01-29 --ed 2013-04-29 -e "(rails|ruby|cdist)" -i test
-
 --------------------------------------------------------------------------------
 
 BUGS

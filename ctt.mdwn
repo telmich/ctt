@@ -16,6 +16,41 @@ Get ctt from git ([gitweb](http://git.schottelius.org/?p=ctt;a=summary)):
 
     git clone git://git.schottelius.org/ctt
 
+## Example usage
+
+    # Track some time
+    % ctt track test
+    Comment: Did some cool work
+    
+    # Track for a given time range
+    % ctt track --sd 2013-04-29-1000 --ed 2013-05-29-1200 test
+    Comment: Long working period
+    
+    # Track (keep running), but specify different start date
+    % ctt track --sd 2013-04-29-0800  test
+    Comment: Started early today
+    
+    # Track without prompting for a comment
+    % ctt track -n test                                       
+    
+    # List available projects
+    % ctt listprojects
+    [...]
+    
+    # List all entries of this month for project test
+    % ctt report test
+    [...]
+    
+    # List all entries from January
+    % ctt report --sd 2013-01-01 --ed 2013-01-31 test 
+    
+    # List all entries from January matching either rails ruby or cdist
+    % ctt report --sd 2013-01-29 --ed 2013-04-29 -e "(rails|ruby|cdist)" test
+    
+    # The same, but case insensitive
+    % ctt report --sd 2013-01-29 --ed 2013-04-29 -e "(rails|ruby|cdist)" -i test
+
+
 ### Mirrors
 
  * git://github.com/telmich/ctt.git ([github](https://github.com/telmich/ctt))
