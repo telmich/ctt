@@ -1,1 +1,4 @@
 lib/ctt/__pycache__/
+
+# Manpages
+*.1

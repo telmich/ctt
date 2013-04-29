@@ -1,0 +1,98 @@
+ctt(1)
+======
+Nico Schottelius <nico-ctt--@--schottelius.org>
+
+
+NAME
+----
+ctt - time tracking for geeks
+
+
+SYNOPSIS
+--------
+ctt [-h] [-d] [-v] {listprojects,track,report} ...
+
+ctt listprojects [-h] [-d] [-v]
+
+ctt track [-h] [-d] [-v] [-s START] [-e END] [-n] project
+
+ctt report [-h] [-d] [-v] [--sd START] [--ed END] [-e REGEXP] [-i]
+           [-f OUTPUT_FORMAT]
+           project
+
+
+DESCRIPTION
+-----------
+
+ctt tracks time while you are working and stores the values
+in a cconfig database.
+
+GENERAL OPTIONS
+---------------
+-h, --help::
+    show this help message and exit
+-d, --debug::
+    set log level to debug
+-v, --verbose::
+    set log level to info, be more verbose
+
+
+TRACK
+-----
+Tracking is started by using the **track** subcommand.
+It requires a project name to track time for.
+
+Without any options it stays in the foreground and waits until
+enter is pressed and then prompts for a comment.
+
+
+-s START, --start START::
+    start datetime (format: Y-m-d-HM)
+-e END, --end END::
+    end datetime (format: Y-m-d-HM)
+-n, --no-comment::
+    disable comment prompting after tracking
+
+
+REPORT
+------
+
+LISTPROJECTS
+------------
+
+EXAMPLES
+--------
+
+--------------------------------------------------------------------------------
+# Track some time
+% ctt track test
+Comment: Did some cool work
+
+# Track for a given time range
+% ctt track --sd 2013-04-29-1000 --ed 2013-05-29-1200 test
+Comment: Long working period
+
+# Track (keep running), but specify different start date
+% ctt track --sd 2013-04-29-0800  test
+Comment: Started early today
+
+# Track without prompting for a comment
+% ctt track -n test                                       
+
+--------------------------------------------------------------------------------
+
+BUGS
+----
+ctt is made for geeks, so it should not stand in your way.
+If it does, raise a bug.
+
+SEE ALSO
+---------
+
+- cconfig: http://www.nico.schottelius.org/docs/cconfig/
+
+
+COPYING
+-------
+Copyright \(C) 2013 Nico Schottelius. Free use of this software is
+granted under the terms of the GNU General Public License version 3 (GPLv3).
