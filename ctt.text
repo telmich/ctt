@@ -75,8 +75,16 @@ Available parameters:
 -i, --ignore-case::
     ignore case distinctions
 -f OUTPUT_FORMAT, --format OUTPUT_FORMAT::
-    output format (default: {0} ({1}): {2})
+    output format (default: {start_datetime} ({delta}): {comment})
 
+Output format may reference the following fields:
+
+- start_datetime
+- end_datetime
+- delta
+- delta_seconds
+- delta_minutes
+- comment
 
 LISTPROJECTS
 ------------

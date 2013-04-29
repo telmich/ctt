@@ -23,14 +23,14 @@
 import os
 import os.path
 
-VERSION         = "0.8"
+VERSION         = "0.9"
 FILE_DELTA      = "delta"
 FILE_COMMENT    = "comment"
 DATEFORMAT      = "%Y-%m-%d"
 DATEFORMAT_PLAIN= DATEFORMAT.replace("%","")
 DATETIMEFORMAT      = "%Y-%m-%d-%H%M"
 DATETIMEFORMAT_PLAIN= DATETIMEFORMAT.replace("%","")
-REPORTFORMAT = "{0} ({1}): {2}"
+REPORTFORMAT = "{start_datetime} ({delta}): {comment}"
 
 # Name of the folder to create - should not contain special characters
 # to ensure cross-os compatibility

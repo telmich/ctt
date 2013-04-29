@@ -164,22 +164,18 @@ class Report(object):
 
         for time in sorted_times:
             entry = self._report_db[time]
+            report = {}
 
-            start_datetime = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+            report['start_datetime'] = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
 
-            delta_seconds = int(float(entry['delta']))
-            delta_minutes = int(delta_seconds/60)
-            delta = datetime.timedelta(seconds=int(float(entry['delta'])))
-
-            end_datetime = start_datetime + delta
-
-            # Strip off microsecends - this is really too much
-            end_datetime = end_datetime.replace(microsecond = 0)
-
+            report['delta_seconds'] = int(float(entry['delta']))
+            report['delta_minutes'] = int(report['delta_seconds']/60)
+            report['delta'] = datetime.timedelta(seconds=int(float(entry['delta'])))
+            report['end_datetime'] = (report['start_datetime'] + report['delta']).replace(microsecond = 0)
 
             if 'comment' in entry:
-                comment = entry['comment']
+                report['comment'] = entry['comment']
             else:
-                comment = False
+                report['comment'] = False
 
-            print(self.output_format.format(start_datetime, delta, comment, delta_seconds, delta_minutes))
+            print(self.output_format.format_map(report))
