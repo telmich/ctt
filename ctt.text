@@ -29,6 +29,8 @@ in a cconfig database.
 
 GENERAL OPTIONS
 ---------------
+The following parameters are available to all subcommands:
+
 -h, --help::
     show this help message and exit
 -d, --debug::
@@ -40,25 +42,47 @@ GENERAL OPTIONS
 TRACK
 -----
 Tracking is started by using the **track** subcommand.
-It requires a project name to track time for.
+It requires the project name to track time for.
 
 Without any options it stays in the foreground and waits until
 enter is pressed and then prompts for a comment.
 
+Available parameters:
 
--s START, --start START::
-    start datetime (format: Y-m-d-HM)
--e END, --end END::
-    end datetime (format: Y-m-d-HM)
+--sd START, --start START::
+    start date (default: first of this month, format: Y-m-d)
+--ed END, --end END::
+    end date (default: last of this month, format: Y-m-d)
 -n, --no-comment::
     disable comment prompting after tracking
 
 
 REPORT
 ------
+Reporting is handled by the **report** subcommand.
+It requires the project name to report time for.
+It supports to filter entries using regular expressions
+and also allows to use a custom output format.
+
+Available parameters:
+
+--sd START, --start START::
+    start date (default: first of this month, format: Y-m-d)
+--ed END, --end END::
+    end date (default: last of this month, format: Y-m-d)
+-e REGEXP, --regexp REGEXP::
+    regular expression to match
+-i, --ignore-case::
+    ignore case distinctions
+-f OUTPUT_FORMAT, --format OUTPUT_FORMAT::
+    output format (default: {0} ({1}): {2})
+
 
 LISTPROJECTS
 ------------
+The **listprojects** subcommand is used to list used projects.
+It does not expect any parameters.
+
 
 EXAMPLES
 --------
@@ -79,6 +103,23 @@ Comment: Started early today
 # Track without prompting for a comment
 % ctt track -n test                                       
 
+# List available projects
+% ctt listprojects
+[...]
+
+# List all entries of this month for project test
+% ctt report test
+[...]
+
+# List all entries from January
+% ctt report --sd 2013-01-01 --ed 2013-01-31 test 
+
+# List all entries from January matching either rails ruby or cdist
+% ctt report --sd 2013-01-29 --ed 2013-04-29 -e "(rails|ruby|cdist)" test
+
+# The same, but case insensitive
+% ctt report --sd 2013-01-29 --ed 2013-04-29 -e "(rails|ruby|cdist)" -i test
+
 --------------------------------------------------------------------------------
 
 BUGS
@@ -89,7 +130,8 @@ If it does, raise a bug.
 SEE ALSO
 ---------
 
-- cconfig: http://www.nico.schottelius.org/docs/cconfig/
+- cconfig homepage: http://www.nico.schottelius.org/docs/cconfig/
+- ctt homepage: http://www.nico.schottelius.org/software/ctt/
 
 
 COPYING
