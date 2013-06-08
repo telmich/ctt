@@ -96,6 +96,9 @@ def parse_argv(argv, version):
     except ctt.Error as e:
         log.error(e)
         sys.exit(1)
+    except AttributeError:
+        parser['main'].print_help()
+
 
 if __name__ == "__main__":
     # Ensure our /lib/ is included into PYTHON_PATH
