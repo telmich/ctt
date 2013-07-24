@@ -63,7 +63,7 @@ class Report(object):
             projects=ctt.listprojects.ListProjects.list_projects()
 
         else:
-            projects=[args.projects[0]]
+            projects=[args.project[0]]
 
         total_time = 0
         for project in projects:
@@ -148,7 +148,6 @@ class Report(object):
     def report(self):
         self.header()
         self.list_entries()
-        self.summary(self.total_time)
 
     def header(self):
         print("Report for %s between %s and %s" %
