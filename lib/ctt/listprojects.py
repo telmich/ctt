@@ -33,6 +33,12 @@ class ListProjects(object):
         cls.print_projects()
 
 
+    @classmethod
     def print_projects():
-        for project in ctt.list_projects(ctt.ctt_dir()):
+        for project in cls.list_projects():
             print(project)
+
+    @staticmethod
+    def list_projects():
+        for project in ctt.list_projects(ctt.ctt_dir()):
+            yield project

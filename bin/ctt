@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# 2012 Nico Schottelius (nico-ctt at schottelius.org)
+# 2012-2013 Nico Schottelius (nico-ctt at schottelius.org)
 #
 # This file is part of ctt.
 #
@@ -66,12 +66,13 @@ def parse_argv(argv, version):
     parser['report'] = parser['sub'].add_parser('report',
         parents=[parser['loglevel']])
     parser['report'].set_defaults(func=Report.commandline)
-    parser['report'].add_argument("project", help="project to report time for", nargs=1)
+    parser['report'].add_argument("project", help="project to report time for", nargs='*')
     parser['report'].add_argument("--sd", "--start", help="start date (default: first of this month, format: %s)" % ctt.DATEFORMAT_PLAIN, 
         nargs=1, dest="start")
     parser['report'].add_argument("--ed", "--end", help="end date (default: last of this month, format: %s)" % ctt.DATEFORMAT_PLAIN, 
         nargs=1, default=None, dest="end")
 
+    parser['report'].add_argument("-a", "--all", help="List entries for all projects", action='store_true')
     parser['report'].add_argument("-e", "--regexp", help="regular expression to match",
         default=None)
     parser['report'].add_argument("-i", "--ignore-case", help="ignore case distinctions", action="store_true")
@@ -96,7 +97,8 @@ def parse_argv(argv, version):
     except ctt.Error as e:
         log.error(e)
         sys.exit(1)
-    except AttributeError:
+    except AttributeError as e:
+        print(e)
         parser['main'].print_help()
 
 

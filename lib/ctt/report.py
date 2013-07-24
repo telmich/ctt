@@ -32,6 +32,7 @@ import re
 import sys
 
 import ctt
+import ctt.listprojects
 
 log = logging.getLogger(__name__)
 
@@ -57,8 +58,20 @@ class Report(object):
 
     @classmethod
     def commandline(cls, args):
-        report = cls(args.project[0], args.start, args.end, args.output_format, args.regexp, args.ignore_case)
-        report.report()
+        # Report time for all projects
+        if args.all:
+            projects=ctt.listprojects.ListProjects.list_projects()
+
+        else:
+            projects=[args.projects[0]]
+
+        total_time = 0
+        for project in projects:
+            report = cls(project, args.start, args.end, args.output_format, args.regexp, args.ignore_case)
+            report.report()
+            total_time = total_time + report.total_time
+
+        cls.summary(total_time)
 
 
     def _init_date(self, start_date, end_date):
@@ -133,17 +146,22 @@ class Report(object):
                 log.debug("Skipping: %s" % dirname)
 
     def report(self):
+        self.header()
         self.list_entries()
-        self.summary()
+        self.summary(self.total_time)
 
-    def summary(self):
-        """Show report to the user"""
+    def header(self):
+        print("Report for %s between %s and %s" %
+            (self.project, self.start_date, self.end_date))
 
-        hours, minutes, seconds = ctt.user_timedelta(self.total_time()) 
+    @staticmethod
+    def summary(total_time):
+        hours, minutes, seconds = ctt.user_timedelta(total_time) 
 
-        print("Tracked time between %s and %s: %sh %sm %ss." %
-            (self.start_date, self.end_date, hours, minutes, seconds))
+        print("Total time tracked: %sh %sm %ss." %
+            (hours, minutes, seconds))
 
+    @property
     def total_time(self):
         """Return all entries"""
 
@@ -160,7 +178,6 @@ class Report(object):
         """Return total time tracked"""
 
         sorted_times = sorted(self._report_db.keys())
-        #for time, entry in self._report_db.items():
 
         for time in sorted_times:
             entry = self._report_db[time]
