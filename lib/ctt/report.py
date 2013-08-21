@@ -63,7 +63,7 @@ class Report(object):
             projects=ctt.listprojects.ListProjects.list_projects()
 
         else:
-            projects=[args.project[0]]
+            projects=args.project
 
         total_time = 0
         for project in projects:
