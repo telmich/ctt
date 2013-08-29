@@ -1,37 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#       
+#
 # 2012 Nico Schottelius (nico-ctt at schottelius.org)
 #
 # This file is part of ctt.
-#   
+#
 # ctt is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-#   
+#
 # ctt is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#       
+#
 # You should have received a copy of the GNU General Public License
 # along with ctt. If not, see <http://www.gnu.org/licenses/>.
 #
-# 
+#
 
 import os
 import os.path
 
-VERSION         = "0.9"
-FILE_DELTA      = "delta"
-FILE_COMMENT    = "comment"
-DATEFORMAT      = "%Y-%m-%d"
-DATEFORMAT_PLAIN= DATEFORMAT.replace("%","")
-DATETIMEFORMAT      = "%Y-%m-%d-%H%M"
-DATETIMEFORMAT_PLAIN= DATETIMEFORMAT.replace("%","")
+VERSION = "0.9"
+FILE_DELTA = "delta"
+FILE_COMMENT = "comment"
+DATEFORMAT = "%Y-%m-%d"
+DATEFORMAT_PLAIN = DATEFORMAT.replace("%", "")
+DATETIMEFORMAT = "%Y-%m-%d-%H%M"
+DATETIMEFORMAT_PLAIN = DATETIMEFORMAT.replace("%", "")
 REPORTFORMAT = "{start_datetime} ({delta}): {comment}"
-
+AUTHOR = 'Nico Schottelius'
+MAIL = 'nico-ctt at schottelius.org'
+WWW = 'http://www.nico.schottelius.org/software/ctt/'
 # Name of the folder to create - should not contain special characters
 # to ensure cross-os compatibility
 DISKFORMAT      = DATETIMEFORMAT
