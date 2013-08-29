@@ -1,9 +1,15 @@
 Changelog
 ---------
 
+	* Changes are always commented with their author in (braces)
+	* Exception: No braces means author == Nico Schottelius
+
+1.0:
+	* Added installer (Oz Nahum)
+
 0.9: 2013-04-29
 	* Renamed -s/-e to --sd / --ed for tracking as well
-	* Added documentation (manpage)
+	* Added manpage as documentation
 
 0.8: 2013-04-27
 	* Added -e / --regexp support for filtering entries on report
