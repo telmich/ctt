@@ -9,17 +9,14 @@ import ctt
 
 setup(name='ctt',
       version=ctt.VERSION,
-      # description=pwman.description,
       author=ctt.AUTHOR,
       author_email=ctt.WWW,
       url=ctt.WWW,
       license="GNU GPL",
       packages=['lib/ctt',
                 ],
-      scripts=['bin/ctt'],
+      scripts=['scripts/ctt'],
       zip_safe=True,
-      # install_requires=['pycrypto>=2.6',
-      #          'colorama>=0.2.4'],
       classifiers=[
           'Environment :: Console',
           'Intended Audience :: End Users/Desktop',
