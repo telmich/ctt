@@ -34,7 +34,7 @@ class ListProjects(object):
 
 
     @classmethod
-    def print_projects():
+    def print_projects(cls):
         for project in cls.list_projects():
             print(project)
 
