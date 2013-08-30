@@ -16,7 +16,12 @@ Get ctt from git ([gitweb](http://git.schottelius.org/?p=ctt;a=summary)):
 
     git clone git://git.schottelius.org/ctt
 
-## Example usage
+The code is mirrored on [github](https://github.com/telmich/ctt) and
+can be accessed via
+
+    git clone git://github.com/telmich/ctt.git
+
+## Examples
 
     # Track some time
     % ctt track test
@@ -49,11 +54,6 @@ Get ctt from git ([gitweb](http://git.schottelius.org/?p=ctt;a=summary)):
     
     # The same, but case insensitive
     % ctt report --sd 2013-01-29 --ed 2013-04-29 -e "(rails|ruby|cdist)" -i test
-
-
-### Mirrors
-
- * git://github.com/telmich/ctt.git ([github](https://github.com/telmich/ctt))
 
 ## Support
 
