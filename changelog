@@ -6,6 +6,7 @@ Changelog
 
 1.0:
 	* Added installer (Oz Nahum)
+	* Bugfix in listprojects (Oz Nahum)
 
 0.9: 2013-04-29
 	* Renamed -s/-e to --sd / --ed for tracking as well
