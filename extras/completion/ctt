@@ -1,0 +1,20 @@
+_ctt() 
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    comms="listproject track report"
+    opts="-h --help -d --debug -v --verbose"
+    cmdopts="--sd --start --ed --end -a --all -e --regexp -i --ignorecase -f --format"
+    case "${prev}" in
+        track|report)
+            local projects=$(for p in ~/.ctt/*; do basename "$p"; done )
+            COMPREPLY=( $(compgen -W "${projects} ${opts} ${cmdopts}" -- ${cur}) )
+            return 0
+        ;;
+    esac
+    COMPREPLY=( $(compgen -W "${comms} ${opts}" -- ${cur}) )
+    return 0
+}
+complete -F _ctt ctt 

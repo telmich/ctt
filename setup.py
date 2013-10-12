@@ -16,6 +16,9 @@ setup(name='ctt',
       packages=['lib/ctt',
                 ],
       scripts=['scripts/ctt'],
+      data_files=[
+            ('/etc/bash_completion.d/', ['extras/completion/ctt']),
+      ],
       zip_safe=True,
       classifiers=[
           'Environment :: Console',
