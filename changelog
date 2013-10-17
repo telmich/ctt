@@ -8,6 +8,10 @@ Changelog
 	* Added installer (Oz Nahum)
 	* Bugfix in listprojects (Oz Nahum)
 	* Allow ctt to run from checkout and installation path
+	* Correct license indication in setup.py (Davide Riccardo Caliendo)
+	* Added license and manifest files (Davide Riccardo Caliendo)
+	* Added bash completion script (Davide Riccardo Caliendo)
+
 
 0.9: 2013-04-29
 	* Renamed -s/-e to --sd / --ed for tracking as well
