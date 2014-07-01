@@ -70,5 +70,4 @@ def project_dir(project):
 
     return project_dir
 
-def list_projects(ctt_dir):
     return os.listdir(ctt_dir)

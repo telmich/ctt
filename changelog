@@ -4,13 +4,14 @@ Changelog
 	* Changes are always commented with their author in (braces)
 	* Exception: No braces means author == Nico Schottelius
 
-1.0:
+1.0: 2014-07-01
 	* Added installer (Oz Nahum)
 	* Bugfix in listprojects (Oz Nahum)
 	* Allow ctt to run from checkout and installation path
 	* Correct license indication in setup.py (Davide Riccardo Caliendo)
 	* Added license and manifest files (Davide Riccardo Caliendo)
 	* Added bash completion script (Davide Riccardo Caliendo)
+	* Report an error on invalid time entries
 
 
 0.9: 2013-04-29

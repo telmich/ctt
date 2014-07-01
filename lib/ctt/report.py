@@ -117,7 +117,12 @@ class Report(object):
 
         self._report_db = {}
         for dirname in os.listdir(self.project_dir):
-            dir_datetime = datetime.datetime.strptime(dirname, ctt.DISKFORMAT)
+            log.debug("Dirname: %s" % dirname)
+            try:
+                dir_datetime = datetime.datetime.strptime(dirname, ctt.DISKFORMAT)
+            except ValueError:
+                raise ctt.Error("Invalid time entry {entry} for project {project}, aborting!".format(entry=dirname, project=self.project))
+
             if dir_datetime >= self.start_date and dir_datetime <= self.end_date:
                 filename = os.path.join(self.project_dir, dirname, ctt.FILE_DELTA)
                 comment_filename = os.path.join(self.project_dir, dirname, ctt.FILE_COMMENT)
@@ -182,12 +187,16 @@ class Report(object):
             entry = self._report_db[time]
             report = {}
 
-            report['start_datetime'] = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+            start_datetime  = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+            delta = datetime.timedelta(seconds=int(float(entry['delta'])))
+            end_datetime    = (start_datetime + delta).replace(microsecond = 0)
 
+            report['start_datetime'] = start_datetime.strftime(ctt.DATETIMEFORMAT)
+            report['end_datetime']   = end_datetime.strftime(ctt.DATETIMEFORMAT)
+
+            report['delta'] = delta
             report['delta_seconds'] = int(float(entry['delta']))
             report['delta_minutes'] = int(report['delta_seconds']/60)
-            report['delta'] = datetime.timedelta(seconds=int(float(entry['delta'])))
-            report['end_datetime'] = (report['start_datetime'] + report['delta']).replace(microsecond = 0)
 
             if 'comment' in entry:
                 report['comment'] = entry['comment']
