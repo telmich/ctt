@@ -22,6 +22,7 @@
 
 import ctt
 import logging
+import os
 
 log = logging.getLogger(__name__)
 
@@ -40,5 +41,8 @@ class ListProjects(object):
 
     @staticmethod
     def list_projects():
-        for project in ctt.list_projects(ctt.ctt_dir()):
+        for project in sorted(os.listdir(ctt.ctt_dir())):
+            if project[0] == ".":
+                continue
+
             yield project
