@@ -14,7 +14,7 @@ ctt [-h] [-d] [-v] {listprojects,track,report} ...
 
 ctt listprojects [-h] [-d] [-v]
 
-ctt track [-h] [-d] [-v] [-s START] [-e END] [-n] project
+ctt track [-h] [-d] [-v] [--sd START] [--ed END] [-n] project
 
 ctt report [-h] [-d] [-v] [--sd START] [--ed END] [-e REGEXP] [-i]
            [-f OUTPUT_FORMAT]
