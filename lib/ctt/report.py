@@ -30,6 +30,7 @@ import os
 import os.path
 import re
 import sys
+import glob
 
 import ctt
 import ctt.listprojects
@@ -63,7 +64,10 @@ class Report(object):
             projects=ctt.listprojects.ListProjects.list_projects()
 
         else:
-            projects=args.project
+            projects = []
+            for x in args.project:
+                fnames = glob.glob(os.path.join(ctt.ctt_dir(), x))
+                projects.extend(fnames)
 
         total_time = 0
         for project in projects:
