@@ -92,8 +92,10 @@ def parse_argv(argv, version):
     log.debug(args)
 
     try:
-        args.func(args)
-
+        if hasattr(args, "func"):
+            args.func(args)
+        else:
+            parser['main'].print_help()
     except ctt.Error as e:
         log.error(e)
         sys.exit(1)
