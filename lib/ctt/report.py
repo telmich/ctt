@@ -159,8 +159,9 @@ class Report(object):
         self.list_entries()
 
     def header(self):
+        project_name = os.path.basename(self.project)
         print("Report for %s between %s and %s" %
-            (self.project, self.start_date, self.end_date))
+            (project_name, self.start_date, self.end_date))
 
     @staticmethod
     def summary(total_time):
