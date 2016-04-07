@@ -32,6 +32,7 @@ import os.path
 import re
 import sys
 import glob
+import collections
 
 import ctt
 import ctt.listprojects
@@ -71,49 +72,61 @@ class Report(object):
                 projects.extend(fnames)
 
         total_time = 0
-        entries = {}
+        reports = collections.OrderedDict()
         for project in projects:
             report = cls(project=project, start_date=args.start,
                     end_date=args.end, output_format=args.output_format,
                     regexp=args.regexp, ignore_case=args.ignore_case)
-            project_report = report.report(args.summary)
-            if args.summary:
-                cls.update_summary_report(entries, project_report)
-            else:
-                report.print_report(project_report, args.output_format)
+            report_data = report.report()
+            reports[report.project] = (report, report_data)
             total_time = total_time + report.total_time
-        if args.summary:
-            cls.print_summary_report(entries, args.output_format)
+        cls.print_reports(reports, args.output_format, args.summary)
 
         cls.summary(total_time)
 
 
     @staticmethod
-    def update_summary_report(report, entry):
-        for time in entry:
-            if not time in report:
-                report[time] = []
-            report[time].extend(entry[time])
-
-
-    @staticmethod
-    def print_summary_report(report, output_format):
-        Report.print_report_entries(report, output_format, sorted_keys=True)
-
-    @staticmethod
-    def print_report_entries(report, output_format, sorted_keys=False):
-        if sorted_keys:
-            keys = sorted(report.keys())
+    def print_report_time_entries(report_data, output_format, summary):
+        ''' Print time entries from report_data report using output_format.
+            
+            If summary is True then the order of times (keys) is
+            sorted.
+        '''
+        if summary:
+            keys = sorted(report_data.keys())
         else:
-            keys = report.keys()
+            keys = report_data.keys()
         for time in keys:
-            entries = report[time]
+            entries = report_data[time]
             for entry in entries:
                 print(output_format.format_map(entry))
 
-    def print_report(self, report, output_format):
-        self.header()
-        self.print_report_entries(report, output_format)
+    @staticmethod
+    def print_reports(reports, output_format, summary):
+        ''' Print reports using output_format for each entry.
+
+            If summary is True then all time entries from all
+            projects is extracted to one report dict.
+            Otherwise, all time entries by each project is printed.
+        '''
+        if summary:
+            summary_report = {}
+        for project in reports:
+            report, report_data = reports[project]
+            for time in report_data:
+                if summary:
+                    if not time in summary_report:
+                        summary_report[time] = report_data[time]
+                    else:
+                        summary_report[time].extend(report_data[time])
+                else:
+                    report.header()
+                    Report.print_report_time_entries(report_data,
+                            output_format, summary)
+        if summary:
+            Report.print_report_time_entries(summary_report,
+                    output_format, summary)
+
 
     def _init_date(self, start_date, end_date):
         """Setup date - either default or user given values"""
@@ -191,9 +204,6 @@ class Report(object):
             else:
                 log.debug("Skipping: %s" % dirname)
 
-    def report(self, summary=False):
-        return self.list_entries()
-
     def header(self):
         project_name = os.path.basename(self.project)
         print("Report for %s between %s and %s" %
@@ -220,6 +230,8 @@ class Report(object):
 
 
     def _get_report_entry(self, time, entry):
+        ''' Get one time entry data.
+        '''
         report = {}
         start_datetime  = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
         delta = datetime.timedelta(seconds=int(float(entry['delta'])))
@@ -239,7 +251,7 @@ class Report(object):
         return report
 
 
-    def list_entries(self):
+    def report(self):
         """Return total time tracked"""
 
         entries = {}
@@ -248,6 +260,7 @@ class Report(object):
             entry = self._report_db[time]
             report = self._get_report_entry(time, entry)
             if not time in entries:
-                entries[time] = []
-            entries[time].append(report)
+                entries[time] = [report]
+            else:
+                entries[time].append(report)
         return entries
