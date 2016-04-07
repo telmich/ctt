@@ -192,7 +192,7 @@ class Report(object):
                 log.debug("Skipping: %s" % dirname)
 
     def report(self, summary=False):
-        return self.list_entries(summary)
+        return self.list_entries()
 
     def header(self):
         project_name = os.path.basename(self.project)
@@ -239,15 +239,11 @@ class Report(object):
         return report
 
 
-    def list_entries(self, summary=False):
+    def list_entries(self):
         """Return total time tracked"""
 
         entries = {}
-        if summary:
-            time_keys = self._report_db.keys()
-        else:
-            time_keys = sorted(self._report_db.keys())
-
+        time_keys = self._report_db.keys()
         for time in time_keys:
             entry = self._report_db[time]
             report = self._get_report_entry(time, entry)
