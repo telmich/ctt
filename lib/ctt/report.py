@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # 2012 Nico Schottelius (nico-ctt at schottelius.org)
+# 2016 Darko Poljak (darko.poljak at gmail.com)
 #
 # This file is part of ctt.
 #
@@ -70,13 +71,49 @@ class Report(object):
                 projects.extend(fnames)
 
         total_time = 0
+        entries = {}
         for project in projects:
-            report = cls(project, args.start, args.end, args.output_format, args.regexp, args.ignore_case)
-            report.report()
+            report = cls(project=project, start_date=args.start,
+                    end_date=args.end, output_format=args.output_format,
+                    regexp=args.regexp, ignore_case=args.ignore_case)
+            project_report = report.report(args.summary)
+            if args.summary:
+                cls.update_summary_report(entries, project_report)
+            else:
+                report.print_report(project_report, args.output_format)
             total_time = total_time + report.total_time
+        if args.summary:
+            cls.print_summary_report(entries, args.output_format)
 
         cls.summary(total_time)
 
+
+    @staticmethod
+    def update_summary_report(report, entry):
+        for time in entry:
+            if not time in report:
+                report[time] = []
+            report[time].extend(entry[time])
+
+
+    @staticmethod
+    def print_summary_report(report, output_format):
+        Report.print_report_entries(report, output_format, sorted_keys=True)
+
+    @staticmethod
+    def print_report_entries(report, output_format, sorted_keys=False):
+        if sorted_keys:
+            keys = sorted(report.keys())
+        else:
+            keys = report.keys()
+        for time in keys:
+            entries = report[time]
+            for entry in entries:
+                print(output_format.format_map(entry))
+
+    def print_report(self, report, output_format):
+        self.header()
+        self.print_report_entries(report, output_format)
 
     def _init_date(self, start_date, end_date):
         """Setup date - either default or user given values"""
@@ -154,9 +191,8 @@ class Report(object):
             else:
                 log.debug("Skipping: %s" % dirname)
 
-    def report(self):
-        self.header()
-        self.list_entries()
+    def report(self, summary=False):
+        return self.list_entries(summary)
 
     def header(self):
         project_name = os.path.basename(self.project)
@@ -183,29 +219,39 @@ class Report(object):
         return count
 
 
-    def list_entries(self):
+    def _get_report_entry(self, time, entry):
+        report = {}
+        start_datetime  = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+        delta = datetime.timedelta(seconds=int(float(entry['delta'])))
+        end_datetime    = (start_datetime + delta).replace(microsecond = 0)
+
+        report['start_datetime'] = start_datetime.strftime(ctt.DATETIMEFORMAT)
+        report['end_datetime']   = end_datetime.strftime(ctt.DATETIMEFORMAT)
+
+        report['delta'] = delta
+        report['delta_seconds'] = int(float(entry['delta']))
+        report['delta_minutes'] = int(report['delta_seconds']/60)
+
+        if 'comment' in entry:
+            report['comment'] = entry['comment']
+        else:
+            report['comment'] = False
+        return report
+
+
+    def list_entries(self, summary=False):
         """Return total time tracked"""
 
-        sorted_times = sorted(self._report_db.keys())
+        entries = {}
+        if summary:
+            time_keys = self._report_db.keys()
+        else:
+            time_keys = sorted(self._report_db.keys())
 
-        for time in sorted_times:
+        for time in time_keys:
             entry = self._report_db[time]
-            report = {}
-
-            start_datetime  = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
-            delta = datetime.timedelta(seconds=int(float(entry['delta'])))
-            end_datetime    = (start_datetime + delta).replace(microsecond = 0)
-
-            report['start_datetime'] = start_datetime.strftime(ctt.DATETIMEFORMAT)
-            report['end_datetime']   = end_datetime.strftime(ctt.DATETIMEFORMAT)
-
-            report['delta'] = delta
-            report['delta_seconds'] = int(float(entry['delta']))
-            report['delta_minutes'] = int(report['delta_seconds']/60)
-
-            if 'comment' in entry:
-                report['comment'] = entry['comment']
-            else:
-                report['comment'] = False
-
-            print(self.output_format.format_map(report))
+            report = self._get_report_entry(time, entry)
+            if not time in entries:
+                entries[time] = []
+            entries[time].append(report)
+        return entries

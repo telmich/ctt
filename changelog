@@ -4,6 +4,12 @@ Changelog
 	* Changes are always commented with their author in (braces)
 	* Exception: No braces means author == Nico Schottelius
 
+Next:
+	* Added -s, --summary option (Darko Poljak)
+	* No args error (Darko Poljak)
+	* Report project name as file path basename (Darko Poljak)
+	* Report globbing (Darko Poljak)
+
 1.0: 2014-07-01
 	* Added installer (Oz Nahum)
 	* Bugfix in listprojects (Oz Nahum)
