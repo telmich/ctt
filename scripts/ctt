@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # 2012-2015 Nico Schottelius (nico-ctt at schottelius.org)
+# 2016 Darko Poljak (darko.poljak at gmail.com)
 #
 # This file is part of ctt.
 #
@@ -78,6 +79,7 @@ def parse_argv(argv, version):
     parser['report'].add_argument("-i", "--ignore-case", help="ignore case distinctions", action="store_true")
     parser['report'].add_argument("-f", "--format", help="output format (default: %s)" % ctt.REPORTFORMAT, 
         default=ctt.REPORTFORMAT, dest="output_format")
+    parser['report'].add_argument("-s", "--summary", help="hie project names and list time entries in chronological order", action="store_true")
 
     #parser['track'].add_argument("-t", "--tag", help="Add tags",
     #    action="store_true")

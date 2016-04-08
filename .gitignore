@@ -1,4 +1,9 @@
+__pycache__/
 lib/ctt/__pycache__/
+*.pyc
+
+# -vim
+.*.swp
 
 # Manpages
 *.1
