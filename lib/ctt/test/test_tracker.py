@@ -29,6 +29,17 @@ import datetime
 import shutil
 
 class TrackerTestCase(ctt.test.CttTestCase):
+
+    def setUp(self):
+        super(TrackerTestCase, self).setUp()
+        self.rm_dirs = []
+
+    def tearDown(self):
+        for d in self.rm_dirs:
+            if os.path.exists(d):
+                shutil.rmtree(d)
+        super(TrackerTestCase, self).tearDown()
+
     def test___init__(self):
         project = 'foo1'
         expected_project_dir = os.path.join(ctt.test.fixtures_dir,
@@ -90,9 +101,9 @@ class TrackerTestCase(ctt.test.CttTestCase):
         expected_comment = "test"
         tracker.comment = expected_comment
         expected_comment += "\n"
-        timedir = os.path.join(os.path.join(
-            ctt.test.fixtures_dir, os.path.join('.ctt', project)),
+        timedir = os.path.join(ctt.test.fixtures_dir, '.ctt', project,
             '2016-04-09-1730')
+        self.rm_dirs.append(timedir)
         if os.path.exists(timedir):
             shutil.rmtree(timedir)
         tracker.write_time()
@@ -106,6 +117,7 @@ class TrackerTestCase(ctt.test.CttTestCase):
         with open(commentfile, "r") as f:
             comment = f.read()
         self.assertEqual(comment, expected_comment)
+        print("timedir: ", timedir)
 
     @unittest.expectedFailure
     def test_write_time_fail(self):
@@ -119,13 +131,14 @@ class TrackerTestCase(ctt.test.CttTestCase):
         tracker._tracked_time = True
         expected_comment = "test"
         tracker.comment = expected_comment
-        timedir = os.path.join(os.path.join(
-            ctt.test.fixtures_dir, os.path.join('.ctt', project)),
+        timedir = os.path.join(ctt.test.fixtures_dir, '.ctt', project,
             '2016-04-09-1730')
+        self.rm_dirs.append(timedir)
         if os.path.exists(timedir):
             shutil.rmtree(timedir)
         os.makedirs(timedir, mode=0o700)
         tracker.write_time()
+        print("timedir: ", timedir)
 
 
 if __name__ == '__main__':
