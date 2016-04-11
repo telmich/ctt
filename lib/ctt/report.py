@@ -113,16 +113,16 @@ class Report(object):
             summary_report = {}
         for project in reports:
             report, report_data = reports[project]
-            for time in report_data:
-                if summary:
+            if summary:
+                for time in report_data:
                     if not time in summary_report:
                         summary_report[time] = report_data[time]
                     else:
                         summary_report[time].extend(report_data[time])
-                else:
-                    report.header()
-                    Report.print_report_time_entries(report_data,
-                            output_format, summary)
+            else:
+                report.header()
+                Report.print_report_time_entries(report_data,
+                        output_format, summary)
         if summary:
             Report.print_report_time_entries(summary_report,
                     output_format, summary)
