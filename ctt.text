@@ -16,8 +16,8 @@ ctt listprojects [-h] [-d] [-v]
 
 ctt track [-h] [-d] [-v] [--sd START] [--ed END] [-n] project
 
-ctt report [-h] [-d] [-v] [--sd START] [--ed END] [-e REGEXP] [-i]
-           [-f OUTPUT_FORMAT]
+ctt report [-h] [-d] [-v] [--sd START] [--ed END] [-a] [-e REGEXP] [-i]
+           [-f OUTPUT_FORMAT] [-s]
            project
 
 
@@ -70,12 +70,16 @@ Available parameters:
     start date (default: first of this month, format: Y-m-d)
 --ed END, --end END::
     end date (default: last of this month, format: Y-m-d)
+-a, --all::
+    List entries for all projects
 -e REGEXP, --regexp REGEXP::
     regular expression to match
 -i, --ignore-case::
     ignore case distinctions
 -f OUTPUT_FORMAT, --format OUTPUT_FORMAT::
     output format (default: {start_datetime} ({delta}): {comment})
+-s, --summary::
+    hide project names and list time entries in chronological order
 
 Output format may reference the following fields:
 
