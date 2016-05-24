@@ -88,14 +88,8 @@ class Report(object):
     @staticmethod
     def print_report_time_entries(report_data, output_format, summary):
         ''' Print time entries from report_data report using output_format.
-            
-            If summary is True then the order of times (keys) is
-            sorted.
         '''
-        if summary:
-            keys = sorted(report_data.keys())
-        else:
-            keys = report_data.keys()
+        keys = sorted(report_data.keys())
         for time in keys:
             entries = report_data[time]
             for entry in entries:
