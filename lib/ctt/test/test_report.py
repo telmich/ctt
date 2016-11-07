@@ -99,7 +99,7 @@ class ReportTestCase(ctt.test.CttTestCase):
     def test_print_reports(self):
         reports = collections.OrderedDict()
         for project in ('foo1', 'foo2'):
-            rep = report.Report(project, ('2016-04-07',), ('2016-04-08',), 
+            rep = report.Report(project, ('2016-04-07',), ('2016-04-08',),
                     ctt.REPORTFORMAT, None, None)
             report_data = rep.report()
             reports[project] = (rep, report_data)
@@ -114,25 +114,25 @@ class ReportTestCase(ctt.test.CttTestCase):
         output = self._get_output()
         self.assertEqual(output, expected_output)
 
-    def test_print_reports_summary(self):
-        reports = collections.OrderedDict()
-        for project in ('foo1', 'foo2'):
-            rep = report.Report(project, ('2016-04-07',), ('2016-04-08',), 
-                    ctt.REPORTFORMAT, None, None)
-            report_data = rep.report()
-            reports[project] = (rep, report_data)
-        expected_output = (
-            "2016-04-07-0810 (0:00:10): foo2\n"
-            "2016-04-07-0826 (0:00:06): foo1\n"
-            "2016-04-08-1200 (1:23:20): foo1 12"
-        )
-        rep.print_reports(reports, ctt.REPORTFORMAT, summary=True)
-        output = self._get_output()
-        self.assertEqual(output, expected_output)
-
+    # Summary should not print time entries
+    # def test_print_reports_summary(self):
+    #     reports = collections.OrderedDict()
+    #     for project in ('foo1', 'foo2'):
+    #         rep = report.Report(project, ('2016-04-07',), ('2016-04-08',),
+    #                 ctt.REPORTFORMAT, None, None)
+    #         report_data = rep.report()
+    #         reports[project] = (rep, report_data)
+    #     expected_output = (
+    #         "2016-04-07-0810 (0:00:10): foo2\n"
+    #         "2016-04-07-0826 (0:00:06): foo1\n"
+    #         "2016-04-08-1200 (1:23:20): foo1 12"
+    #     )
+    #     rep.print_reports(reports, ctt.REPORTFORMAT, summary=True)
+    #     output = self._get_output()
+    #     self.assertEqual(output, expected_output)
 
     def test__init_date(self):
-        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',), 
+        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',),
                 ctt.REPORTFORMAT, None, None)
         expected_start_date = datetime.datetime(2016, 4, 7)
         expected_end_date = datetime.datetime(2016, 4, 7, 23, 59, 59)
@@ -141,7 +141,7 @@ class ReportTestCase(ctt.test.CttTestCase):
 
     @unittest.expectedFailure
     def test__init_date_fail(self):
-        rep = report.Report('foo1', ('2016-04-08',), ('2016-04-07',), 
+        rep = report.Report('foo1', ('2016-04-08',), ('2016-04-07',),
                 ctt.REPORTFORMAT, None, None)
 
     def test__init_date_defaults(self):
@@ -158,11 +158,11 @@ class ReportTestCase(ctt.test.CttTestCase):
 
     @unittest.expectedFailure
     def test__init_report_db_fail(self):
-        rep = report.Report('unexisting', ('2016-04-07',), ('2016-04-07',), 
+        rep = report.Report('unexisting', ('2016-04-07',), ('2016-04-07',),
                 ctt.REPORTFORMAT, None, None)
 
     def test__init_report_db(self):
-        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',), 
+        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',),
                 ctt.REPORTFORMAT, None, None)
         expected_db =  {
                 '2016-04-07-0826': {
@@ -173,7 +173,7 @@ class ReportTestCase(ctt.test.CttTestCase):
         self.assertEqual(rep._report_db, expected_db)
 
     def test_header(self):
-        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',), 
+        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',),
                 ctt.REPORTFORMAT, None, None)
         rep.header()
         output = self._get_output()
@@ -186,14 +186,14 @@ class ReportTestCase(ctt.test.CttTestCase):
         self.assertEqual(output, "Total time tracked: 0h 0m 10s.")
 
     def test_total_time(self):
-        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',), 
+        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-07',),
                 ctt.REPORTFORMAT, None, None)
         total_time = rep.total_time
         expected_total_time =  6.248274
         self.assertEqual(total_time, expected_total_time)
 
     def test_report(self):
-        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-08',), 
+        rep = report.Report('foo1', ('2016-04-07',), ('2016-04-08',),
                 ctt.REPORTFORMAT, None, None)
         expected_entries = {
                 '2016-04-07-0826': [
