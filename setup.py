@@ -4,8 +4,9 @@ script to install ctt
 """
 import sys
 from setuptools import setup
-sys.path.insert(0, 'lib/')
 import ctt
+
+sys.path.insert(0, 'lib/')
 
 setup(name='ctt',
       version=ctt.VERSION,
@@ -28,5 +29,5 @@ setup(name='ctt',
           'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
           'Operating System :: POSIX',
           'Programming Language :: Python',
-          'Requires-Python:: 3.x']
-      )
+          'Requires-Python:: 3.x'
+      ])

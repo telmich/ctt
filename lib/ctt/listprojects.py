@@ -26,13 +26,13 @@ import os
 
 log = logging.getLogger(__name__)
 
+
 class ListProjects(object):
     """Return existing projects"""
 
     @classmethod
     def commandline(cls, args):
         cls.print_projects()
-
 
     @classmethod
     def print_projects(cls):

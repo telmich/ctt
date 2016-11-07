@@ -28,6 +28,7 @@ import os
 import datetime
 import shutil
 
+
 class TrackerTestCase(ctt.test.CttTestCase):
 
     def setUp(self):
@@ -43,7 +44,7 @@ class TrackerTestCase(ctt.test.CttTestCase):
     def test___init__(self):
         project = 'foo1'
         expected_project_dir = os.path.join(ctt.test.fixtures_dir,
-                os.path.join('.ctt', project))
+                                            os.path.join('.ctt', project))
         tracker = tr.Tracker(project)
         self.assertEqual(tracker.project, project)
         self.assertEqual(tracker.project_dir, expected_project_dir)
@@ -52,31 +53,31 @@ class TrackerTestCase(ctt.test.CttTestCase):
         self.assertIsNone(tracker.comment)
         self.assertFalse(tracker._tracked_time)
 
-        tracker = tr.Tracker(project, start_datetime=('2016-04-09-0900',))
+        tracker = tr.Tracker(project, start_datetime=('2016-04-09-0900', ))
         self.assertEqual(tracker.start_datetime,
-                datetime.datetime(2016, 4, 9, 9, 0))
+                         datetime.datetime(2016, 4, 9, 9, 0))
         self.assertIsNone(tracker.end_datetime)
         self.assertFalse(tracker._tracked_time)
 
-        tracker = tr.Tracker(project, start_datetime=('2016-04-04-0900',),
-                end_datetime=('2016-04-09-2000',))
+        tracker = tr.Tracker(project, start_datetime=('2016-04-04-0900', ),
+                             end_datetime=('2016-04-09-2000',))
         self.assertEqual(tracker.start_datetime,
-                datetime.datetime(2016, 4, 4, 9, 0))
+                         datetime.datetime(2016, 4, 4, 9, 0))
         self.assertEqual(tracker.end_datetime,
-                datetime.datetime(2016, 4, 9, 20, 0))
+                         datetime.datetime(2016, 4, 9, 20, 0))
         self.assertTrue(tracker._tracked_time)
 
     @unittest.expectedFailure
     def test__init__fail(self):
         project = 'foo1'
-        tracker = tr.Tracker(project, start_datetime=('2016-04-090900',))
+        tr.Tracker(project, start_datetime=('2016-04-090900', ))
 
     def test_delta(self):
         project = 'foo1'
         start_dt = datetime.datetime(2016, 4, 4, 9, 0)
         end_dt = datetime.datetime(2016, 4, 9, 20, 0)
-        tracker = tr.Tracker(project, start_datetime=('2016-04-04-0900',),
-                end_datetime=('2016-04-09-2000',))
+        tracker = tr.Tracker(project, start_datetime=('2016-04-04-0900', ),
+                             end_datetime=('2016-04-09-2000', ))
         expected_delta = end_dt - start_dt
         tracker._tracked_time = True
         delta = tracker.delta(True)
@@ -93,7 +94,7 @@ class TrackerTestCase(ctt.test.CttTestCase):
         project = 'foo1'
         start_dt = '2016-04-09-1730'
         tracker = tr.Tracker(project, start_datetime=(start_dt,),
-                comment=True)
+                             comment=True)
         end_dt = datetime.datetime(2016, 4, 9, hour=17, minute=45)
         expected_delta = str(15 * 60) + '.0\n'  # seconds
         tracker.end_datetime = end_dt
@@ -102,7 +103,7 @@ class TrackerTestCase(ctt.test.CttTestCase):
         tracker.comment = expected_comment
         expected_comment += "\n"
         timedir = os.path.join(ctt.test.fixtures_dir, '.ctt', project,
-            '2016-04-09-1730')
+                               '2016-04-09-1730')
         self.rm_dirs.append(timedir)
         if os.path.exists(timedir):
             shutil.rmtree(timedir)
@@ -124,15 +125,15 @@ class TrackerTestCase(ctt.test.CttTestCase):
         project = 'foo1'
         start_dt = '2016-04-09-1730'
         tracker = tr.Tracker(project, start_datetime=(start_dt,),
-                comment=True)
+                             comment=True)
         end_dt = datetime.datetime(2016, 4, 9, hour=17, minute=45)
-        expected_delta = 15 * 60  # seconds
+        # expected_delta = 15 * 60  # seconds
         tracker.end_datetime = end_dt
         tracker._tracked_time = True
         expected_comment = "test"
         tracker.comment = expected_comment
         timedir = os.path.join(ctt.test.fixtures_dir, '.ctt', project,
-            '2016-04-09-1730')
+                               '2016-04-09-1730')
         self.rm_dirs.append(timedir)
         if os.path.exists(timedir):
             shutil.rmtree(timedir)

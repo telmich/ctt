@@ -22,17 +22,17 @@
 
 import datetime
 import logging
-import time
 import os
 import os.path
-import sys
 
 import ctt
 
 log = logging.getLogger(__name__)
 
+
 class Tracker:
-    def __init__(self, project, start_datetime = None, end_datetime = None, comment = True):
+    def __init__(self, project, start_datetime=None, end_datetime=None,
+                 comment=True):
         self.project = project
         self.project_dir = ctt.project_dir(project)
 
@@ -42,12 +42,14 @@ class Tracker:
         # Setup default values
         try:
             if start_datetime:
-                self.start_datetime = datetime.datetime.strptime(start_datetime[0], ctt.DATETIMEFORMAT)
+                self.start_datetime = datetime.datetime.strptime(
+                    start_datetime[0], ctt.DATETIMEFORMAT)
             else:
                 self.start_datetime = None
 
             if end_datetime:
-                self.end_datetime = datetime.datetime.strptime(end_datetime[0], ctt.DATETIMEFORMAT)
+                self.end_datetime = datetime.datetime.strptime(
+                   end_datetime[0], ctt.DATETIMEFORMAT)
             else:
                 self.end_datetime = None
         except ValueError as e:
@@ -55,7 +57,6 @@ class Tracker:
 
         if self.start_datetime and self.end_datetime:
             self._tracked_time = True
-
 
     @classmethod
     def commandline(cls, args):
@@ -100,13 +101,14 @@ class Tracker:
 
         if self.start_datetime >= self.end_datetime:
             raise ctt.Error("End date must be after start date! (%s > %s)!" %
-                (self.start_datetime, self.end_datetime))
+                            (self.start_datetime, self.end_datetime))
 
         subdirname = self.start_datetime.strftime(ctt.DISKFORMAT)
         time_dir = os.path.join(self.project_dir, subdirname)
 
         if os.path.exists(time_dir):
-            raise ctt.Error("Already tracked time at this beginning for this project")
+            raise ctt.Error(
+                "Already tracked time at this beginning for this project")
 
         os.makedirs(time_dir, mode=0o700)
 
