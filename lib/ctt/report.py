@@ -172,9 +172,10 @@ class Report(object):
                 dir_datetime = datetime.datetime.strptime(
                     dirname, ctt.DISKFORMAT)
             except ValueError:
-                raise ctt.Error(("Invalid time entry {entry} for project "
-                                 "{project}, aborting!").format(
-                                     entry=dirname, project=self.project))
+                log.warning("Invalid time entry {entry} for project "
+                            "{project}, skipping.".format(
+                                entry=dirname, project=self.project))
+                continue
 
             if (dir_datetime >= self.start_date and
                     dir_datetime <= self.end_date):

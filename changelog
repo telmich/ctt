@@ -5,6 +5,7 @@ Changelog
 	* Exception: No braces means author == Nico Schottelius
 
 Next:
+	* Ignore non matching patterns for report command (Darko Poljak)
 	* Added -s, --summary option (Darko Poljak)
 	* No args error (Darko Poljak)
 	* Report project name as file path basename (Darko Poljak)
