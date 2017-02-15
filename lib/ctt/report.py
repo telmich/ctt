@@ -42,7 +42,7 @@ log = logging.getLogger(__name__)
 class Report(object):
     """Create a report on tracked time"""
 
-    def __init__(self, project, start_date, end_date, 
+    def __init__(self, project, start_date, end_date,
         output_format, regexp, ignore_case):
 
         self.project = project
@@ -154,7 +154,7 @@ class Report(object):
         self.end_date = self.end_date.replace(hour=23,minute=59,second=59)
 
         if self.start_date >= self.end_date:
-            raise ctt.Error("End date must be after start date (%s >= %s)" % 
+            raise ctt.Error("End date must be after start date (%s >= %s)" %
                 (self.start_date, self.end_date))
 
     def _init_report_db(self):
@@ -169,7 +169,8 @@ class Report(object):
             try:
                 dir_datetime = datetime.datetime.strptime(dirname, ctt.DISKFORMAT)
             except ValueError:
-                raise ctt.Error("Invalid time entry {entry} for project {project}, aborting!".format(entry=dirname, project=self.project))
+                log.warning("Invalid time entry {entry} for project {project}, skipping.".format(entry=dirname, project=self.project))
+                continue
 
             if dir_datetime >= self.start_date and dir_datetime <= self.end_date:
                 filename = os.path.join(self.project_dir, dirname, ctt.FILE_DELTA)
@@ -180,7 +181,7 @@ class Report(object):
                 if os.path.exists(comment_filename):
                     with open(comment_filename, "r") as fd:
                         comment = fd.read().rstrip('\n')
-                    
+
                     # If regular expression given, but not matching, skip entry
                     if self.regexp and not re.search(self.regexp, comment, self.search_flags):
                         continue
@@ -205,7 +206,7 @@ class Report(object):
 
     @staticmethod
     def summary(total_time):
-        hours, minutes, seconds = ctt.user_timedelta(total_time) 
+        hours, minutes, seconds = ctt.user_timedelta(total_time)
 
         print("Total time tracked: %sh %sm %ss." %
             (hours, minutes, seconds))
