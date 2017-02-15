@@ -36,10 +36,12 @@ MAIL = 'nico-ctt at schottelius.org'
 WWW = 'http://www.nico.schottelius.org/software/ctt/'
 # Name of the folder to create - should not contain special characters
 # to ensure cross-os compatibility
-DISKFORMAT      = DATETIMEFORMAT
+DISKFORMAT = DATETIMEFORMAT
+
 
 class Error(Exception):
     pass
+
 
 # Our output format
 def user_timedelta(seconds):
@@ -59,15 +61,17 @@ def user_timedelta(seconds):
 
     return (hours, minutes, seconds)
 
+
 def ctt_dir():
     home = os.environ['HOME']
     ctt_dir = os.path.join(home, ".ctt")
 
     return ctt_dir
 
+
 def project_dir(project):
     project_dir = os.path.join(ctt_dir(), project)
 
     return project_dir
 
-    return os.listdir(ctt_dir)
+    # return os.listdir(ctt_dir)

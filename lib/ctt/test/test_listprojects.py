@@ -25,12 +25,13 @@ import ctt
 import ctt.listprojects as cttls
 import ctt.test
 
+
 class ListProjectsTestCase(ctt.test.CttTestCase):
 
     def test_list_projects(self):
         projects = cttls.ListProjects.list_projects()
-        expected_projects = [ 'foo1', 'foo2', 'foo3', 'spam-eggs',
-                'test-1', 'test-2', 'test-3', ]
+        expected_projects = ['foo1', 'foo2', 'foo3', 'spam-eggs',
+                             'test-1', 'test-2', 'test-3', ]
         gotten_projects = sorted(projects)
         self.assertEqual(gotten_projects, expected_projects)
 

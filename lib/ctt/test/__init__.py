@@ -22,7 +22,9 @@
 import os
 import unittest
 
-fixtures_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "fixtures"))
+fixtures_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                            "fixtures"))
+
 
 class CttTestCase(unittest.TestCase):
     def setUp(self):
