@@ -4,7 +4,7 @@ Changelog
 	* Changes are always commented with their author in (braces)
 	* Exception: No braces means author == Nico Schottelius
 
-Next:
+1.1: 2017-02-16
 	* Ignore non matching patterns for report command (Darko Poljak)
 	* Added -s, --summary option (Darko Poljak)
 	* No args error (Darko Poljak)
