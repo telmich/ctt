@@ -4,9 +4,11 @@ script to install ctt
 """
 import sys
 from setuptools import setup
-import ctt
 
 sys.path.insert(0, 'lib/')
+
+import ctt
+
 
 setup(name='ctt',
       version=ctt.VERSION,
