@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# 2012 Nico Schottelius (nico-ctt at schottelius.org)
+# 2012-2018 Nico Schottelius (nico-ctt at schottelius.org)
 # 2016 Darko Poljak (darko.poljak at gmail.com)
 #
 # This file is part of ctt.
@@ -238,6 +238,7 @@ class Report(object):
         '''
         report = {}
         start_datetime = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+
         delta = datetime.timedelta(seconds=int(float(entry['delta'])))
         end_datetime = (start_datetime + delta).replace(microsecond=0)
 
@@ -261,7 +262,13 @@ class Report(object):
         time_keys = self._report_db.keys()
         for time in time_keys:
             entry = self._report_db[time]
-            report = self._get_report_entry(time, entry)
+
+            try:
+                report = self._get_report_entry(time, entry)
+            except ValueError as e:
+                log.error("Cannot parse entry {}: {}".format(time, e))
+                sys.exit(1)
+
             if time not in entries:
                 entries[time] = [report]
             else:
