@@ -30,6 +30,7 @@ import os.path
 import re
 import glob
 import collections
+import sys
 
 import ctt
 import ctt.listprojects
