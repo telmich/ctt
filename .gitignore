@@ -4,6 +4,7 @@ lib/ctt/__pycache__/
 
 # -vim
 .*.swp
+.ropeproject
 
 # Manpages
 *.1

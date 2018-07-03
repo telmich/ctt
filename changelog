@@ -3,6 +3,7 @@ Changelog
 
 	* Changes are always commented with their author in (braces)
 	* Exception: No braces means author == Nico Schottelius
+	* Ignore, warn and continue in case of invalid delta (Darko Poljak)
 
 1.1: 2017-02-16
 	* Ignore non matching patterns for report command (Darko Poljak)

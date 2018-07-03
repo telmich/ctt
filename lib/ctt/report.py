@@ -229,8 +229,13 @@ class Report(object):
         for entry in self._report_db.values():
             delta = entry['delta']
             log.debug("Adding %s to %s time..." % (delta, count))
-            count = count + float(delta)
-
+            try:
+                count = count + float(delta)
+            except ValueError:
+                log.warning("Invalid delta in entry {entry} for project "
+                            "{project}, skipping for total time.".format(
+                                entry=entry, project=self.project))
+                continue
         return count
 
     def _get_report_entry(self, time, entry):
@@ -261,7 +266,13 @@ class Report(object):
         time_keys = self._report_db.keys()
         for time in time_keys:
             entry = self._report_db[time]
-            report = self._get_report_entry(time, entry)
+            try:
+                report = self._get_report_entry(time, entry)
+            except ValueError:
+                log.warning("Invalid delta in entry {entry} for project "
+                            "{project}, skipping for report.".format(
+                                entry=entry, project=self.project))
+                continue
             if time not in entries:
                 entries[time] = [report]
             else:
