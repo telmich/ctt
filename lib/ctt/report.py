@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# 2012 Nico Schottelius (nico-ctt at schottelius.org)
+# 2012-2018 Nico Schottelius (nico-ctt at schottelius.org)
 # 2016 Darko Poljak (darko.poljak at gmail.com)
 #
 # This file is part of ctt.
@@ -30,6 +30,7 @@ import os.path
 import re
 import glob
 import collections
+import sys
 
 import ctt
 import ctt.listprojects
@@ -243,6 +244,7 @@ class Report(object):
         '''
         report = {}
         start_datetime = datetime.datetime.strptime(time, ctt.DATETIMEFORMAT)
+
         delta = datetime.timedelta(seconds=int(float(entry['delta'])))
         end_datetime = (start_datetime + delta).replace(microsecond=0)
 
