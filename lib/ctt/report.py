@@ -30,7 +30,6 @@ import os.path
 import re
 import glob
 import collections
-import sys
 
 import ctt
 import ctt.listprojects
@@ -227,15 +226,16 @@ class Report(object):
         """Return all entries"""
 
         count = 0
-        for entry in self._report_db.values():
+        for dirname, entry in self._report_db.items():
             delta = entry['delta']
             log.debug("Adding %s to %s time..." % (delta, count))
             try:
                 count = count + float(delta)
             except ValueError:
-                log.warning("Invalid delta in entry {entry} for project "
-                            "{project}, skipping for total time.".format(
-                                entry=entry, project=self.project))
+                log.warning("1 Invalid delta entry {entry} for {dirname} for "
+                            "project {project}, skipping for total "
+                            "time.".format(entry=entry, dirname=dirname,
+                                           project=self.project))
                 continue
         return count
 
@@ -271,9 +271,10 @@ class Report(object):
             try:
                 report = self._get_report_entry(time, entry)
             except ValueError:
-                log.warning("Invalid delta in entry {entry} for project "
-                            "{project}, skipping for report.".format(
-                                entry=entry, project=self.project))
+                log.warning("2 Invalid delta entry {entry} for {dirname} for "
+                            "project {project}, skipping".format(
+                                entry=entry, dirname=time,
+                                project=self.project))
                 continue
             if time not in entries:
                 entries[time] = [report]
